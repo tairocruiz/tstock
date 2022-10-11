@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('TourCategoryController@store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.tour_categories.store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">
@@ -16,7 +16,7 @@
                     <div class="form-group col-md-3">
                         <label for="special">Mark if Special</label>
                         <label>
-                            <input type="checkbox" name="special"> is it Special?
+                            <input type="checkbox" value="1" name="special"> is it Special?
                         </label>
                     </div>
                 </div>

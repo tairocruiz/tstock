@@ -9,10 +9,20 @@ class TourCategory extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'special',
+        'seo_title',
+        'meta_description',
+        'description',
+        'photo',
+        'slug',
+    ];
+
     /**
      * @var \Illuminate\Database\Eloquent\Models
      *
-     * @return \Illuminate\Database\Eloquent\Tour
+     * @return App\Models\Tour
      */
     public function tours()
     {

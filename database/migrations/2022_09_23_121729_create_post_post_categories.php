@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('post_post_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('post_id');
-            $table->unsignedInteger('post_category_id');
-            $table->timestamps();
+            $table->id();
+            $table->bigInteger('post_id', false, true);
+            $table->bigInteger('post_category_id', false, true);
+            $table->foreign('post_category_id')->references('id')->on('post_categories')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('post_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('restrict');
+            $table->timestampsTz();
         });
     }
 

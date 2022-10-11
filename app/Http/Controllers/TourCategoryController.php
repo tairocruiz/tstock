@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\TourCategory;
 use Illuminate\Http\Request;
+use App\Models\Tour;
+use App\Models\Page;
+use App\Models\DestinationCategory;
+use App\Http\Requests\TourCategoryStoreRequest;
 use Illuminate\Support\Facades\Storage;
 
 class TourCategoryController extends Controller
@@ -12,14 +16,22 @@ class TourCategoryController extends Controller
     public function index()
     {
         $title = 'Tanzania Safaris and Tours';
-        return view('front.tour-categories.index', compact('title'));
+        $tour_categories = TourCategory::all();
+        $tours = Tour::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        return view('front.tour-categories.index', compact('title', 'tour_categories', 'tours', 'destination_categories', 'pages'));
     }
 
     public function show($slug)
     {
-        $category = TourCategory::where('slug',$slug)->firstOrFail();
-        $title = $category->seo_title ? $category->seo_title : $category->name;
-        return view('front.tour-categories.show', compact('category','title','seo_title'));
+        $tour_category = TourCategory::firstWhere('slug', $slug);
+        $title = $tour_category->seo_title ? $tour_category->seo_title : $tour_category->name;
+        $tour_categories = TourCategory::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        return view('front.tour-categories.show', compact('tour_category', 'title', 'tour_categories', 'pages', 'destination_categories'));
+        //return 'aman at TourCategory::show';
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -27,43 +39,57 @@ class TourCategoryController extends Controller
     public function all()
     {
         $title = 'Listing all Tour Categories';
-        return view('admin.tour-categories.all',compact('title'));
+        $tour_categories = TourCategory::all();
+        return view('admin.tour-categories.all',compact('title', 'tour_categories'));
     }
 
-    public function add()
+    public function create()
     {
         $title = 'Add a new Tour Category';
-        return view('admin.tour-categories.add',compact('title'));
+        $tour_categories = TourCategory::all();
+        return view('admin.tour-categories.add',compact('title', 'tour_categories'));
     }
 
-    public function store(Request $request)
+    public function store(TourCategoryStoreRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:100',
-            'seo_title' => 'nullable|string|max:65',
-            'meta_description' => 'nullable|string|max:160',
-            'description' => 'nullable|string',
-            'photo' => 'required|image|min:200|max:600',
-        ]);
-
-        $category = new TourCategory;
+        /*$category = new TourCategory;
 
         $category->name = $request->name;
         $category->special = $request->special !== null ? 1 : 0;
         $category->seo_title = $request->seo_title;
         $category->meta_description = $request->meta_description;
-        $category->description = $request->description;
+        $category->description = $request->description;*/
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('/public/tour_category_images');
             $path = explode('/',$path);
             $fileName = $path[2];
-            $category->photo = $fileName;
+
+            //$category->photo = $fileName;
+            TourCategory::create([
+                'name' => $request->name,
+                'special' => $request->special,
+                'seo_title' => $request->seo_title,
+                'meta_description' => $request->meta_description,
+                'description' => $request->description,
+                'photo' => $request->photo,
+                'slug' => $request->slug,
+            ]);
+
+            return redirect()->route('admin.tour-categories')->with('message', 'Tour added Successful');
+        }else{
+            TourCategory::create([
+                'name' => $request->name,
+                'special' => $request->special,
+                'seo_title' => $request->seo_title,
+                'meta_description' => $request->meta_description,
+                'description' => $request->description,
+                'photo' => $request->photo,
+                'slug' => $request->slug,
+            ]);
+
+            return redirect()->route('tour-categories.index')->with('message', 'Tour added Successful');
         }
-
-        $category->save();
-
-        return redirect('/admin/tour-categories/')->with('success',$category->name.' have been successfully added');
     }
 
     public function edit($id)

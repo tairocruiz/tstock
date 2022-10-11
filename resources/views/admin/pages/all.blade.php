@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/pages/add" class="btn btn-success pull-right">Add New Page</a>
+                <a href="{{ url('/admin/pages/create') }}" class="btn btn-success pull-right">Add New Page</a>
             </h3>
             <hr>
             @if($pages->count())

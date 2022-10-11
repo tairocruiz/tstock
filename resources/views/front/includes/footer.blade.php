@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-4 col-lg-3">
             <h3 class="bira"><i class="fa fa-fw fa-map-pin mr-2"></i>Places to Go</h3>
-           
+
         </div>
         <div class="col-sm-4 col-lg-3">
             <h3 class="bira"><i class="fa fa-fw fa-globe mr-2"></i>Contacts</h3>
@@ -49,6 +49,6 @@
         {{--bootom bar--}}
         <div class="col-md-12 bottom-bar-footer">
             <span class="assistant-light">&copy; {{ Date('Y') }} {{ config('app.name') }}. All Rights Reserved</span>
-            <span class="assistant-light pull-right">Developed & Powered by <span class="powered spaceage"><a href="https://akiditechnologies.com" target="_blank" title="AKIDI Technologies">aKIDI</a></span></span>
+            <span class="assistant-light pull-right">Developed & Powered by <span class="powered spaceage"><a href="https://blurredconsole.github.io" target="_blank" title="BluCo">BluCo</a></span></span>
         </div>
     </div>

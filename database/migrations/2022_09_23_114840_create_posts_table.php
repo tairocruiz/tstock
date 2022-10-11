@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('title');
             $table->string('slug');
             $table->string('seo_title')->nullable();
@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('photo');
             $table->mediumText('description');
             $table->unsignedInteger('category_id')->default(1);
-            $table->foreign('category_id')->references('id')->on('post_categories')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

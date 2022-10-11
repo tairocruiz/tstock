@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\DestinationCategory;
 use Illuminate\Http\Request;
+use App\Models\Page;
+use App\Models\TourCategory;
 use Illuminate\Support\Facades\Storage;
 
 class DestinationController extends Controller
-{public function show($slug)
+{
+    public function show($slug)
     {
-        $destination = Destination::where('slug',$slug)->firstOrFail();
+        $destination = Destination::firstWhere('slug', $slug);
         $title = $destination->seo_title? $destination->seo_title : $destination->name;
-        return view('front.destinations.show', compact('destination','title'));
+        $destination_categories = DestinationCategory::all();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+    
+        return view('front.destinations.show', compact('destination', 'title', 'destination_categories', 'pages', 'tour_categories'));
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -22,7 +30,7 @@ class DestinationController extends Controller
         return view('admin.destinations.add',compact('title'));
     }
 
-    public function all()
+    public function index()
     {
         $title = 'Listing all Destinations';
         return view('admin.destinations.all',compact('title'));

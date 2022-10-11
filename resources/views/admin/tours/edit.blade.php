@@ -6,8 +6,9 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('TourController@update',$tour->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ route('admin.tours.update', $tour) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
                 <div class="form-group">
                     <label for="name">Edit Tour Package Name</label>
                     <input type="text" id="name" name="name" class="form-control" value="{{ $tour->name }}" required>
@@ -43,17 +44,17 @@
                     <input type="file" id="photo" name="photo" class="form-control">
                 </div>
                 <div class="row mt-4">
-                @if($tour->categories->count())
+                @if($tour->tour_category->count())
                     <div class="col-md-12"><label for="categories">Related Tour Categories</label></div>
-                    @foreach($tour->categories as $category)
+                    @foreach($tour->tour_category as $category)
                         <div class="col-md-4">
                             <label>
-                                <input type="checkbox" name="tour_categories[]" value="{{ $category->id }}" checked> {{ $category->name }}
+                                <input type="checkbox" name="tour_categories[]" value="{{ $tour->tour_category->id }}" checked> {{ $tour->tour_category->name }}
                             </label>
                         </div>
                     @endforeach
                 @endif
-                @if($tour_categories->count() > $tour->categories->count())
+                @if($tour_categories->count() > $tour->tour_category->count())
                     @foreach($tour_categories->where('id','!=',$category->id) as $tour_category)
                         <div class="col-md-4">
                             <label>
@@ -70,8 +71,9 @@
                     <a id="remove-tour-button" class="btn btn-danger pull-right" title="Remove {{ $tour->name }}"><i class="fa fa-trash-o mr-1"></i>Remove</a>
                 </div>
             </form>
-            <form id="remove-tour-form" action="{{ action('TourController@remove',$tour->id) }}" method="POST">
-                {{ csrf_field() }}
+            <form id="remove-tour-form" action="{{ route('admin.tours.destroy', $tour->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
                 <input type="hidden" name="_method" value="DELETE">
             </form>
         </div>

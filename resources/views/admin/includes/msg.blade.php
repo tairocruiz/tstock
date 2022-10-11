@@ -6,9 +6,9 @@
     @endforeach
 @endif
 
-@if(session('success'))
+@if(session('message')))
     <div class="alert alert-success alert-dismissable" style="margin-top: 20px;">
-        <i class="fa fa-lg fa-check-circle mr-2"></i>{{session('success')}}
+        <i class="fa fa-lg fa-check-circle mr-2"></i>{{session('message')}}
     </div>
 @endif
 

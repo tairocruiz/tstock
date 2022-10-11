@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/tour-categories/add" class="btn btn-success pull-right">Add New Category</a>
+                <a href="/admin/tour_categories/create" class="btn btn-success pull-right">Add New Category</a>
             </h3>
             <hr>
             @if($tour_categories->count())
@@ -24,7 +24,7 @@
                             <td class="text-center">@if($category->special) <i class="fa fa-star text-danger" title="Special"></i> @endif</td>
                             <td>{{ $category->seo_title }}</td>
                             <td class="text-center">{{ $category->tours->count() ? $category->tours->count() : '' }}</td>
-                            <td class="w-5 text-center"><a href="/admin/tour-categories/{{ $category->id }}/edit"><i class="fa fa-edit"></i></a></td>
+                            <td class="w-5 text-center"><a href="{{ route('admin.tour_categories.edit', $category->id) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                 </table>

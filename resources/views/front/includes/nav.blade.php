@@ -33,10 +33,10 @@
             </li>
             <li class="sub-menu">
                 <a href="/tanzania/places-to-go"><i class="fa fa-angle-right mr-2 visible-xs"></i>Destinations</a>
-                @if($destination_categories->count() != null)
+                @if($destination_categories->count())
                     <ul class="dropdown">
                         @foreach($destination_categories as $category)
-                            @if(!is_null($category->destinations->count()))
+                            @if($category->destinations->count())
                                 <li>
                                     <a href="/places-to-go/{{ $category->slug }}">
                                         <i class="fa fa-angle-right mr-2"></i>{{ $category->name }}

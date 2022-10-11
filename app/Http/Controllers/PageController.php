@@ -16,6 +16,13 @@ use Symfony\Component\ErrorHandler\Debug;
 
 class PageController extends Controller
 {
+    /**
+     * @method aman for testinng
+     */
+    public function aman(){
+        return 'aman';
+    }
+
     public function home()
     {
         $title = 'Tanzania Safari Tours - Take Me To Tanzania Adventure Safaris';

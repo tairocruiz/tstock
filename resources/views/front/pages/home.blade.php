@@ -30,7 +30,7 @@
                                 <div class="panel panel-default panel-raised panel-noroundcorners">
                                     <div class="panel-body">
                                         <a href="/tours/{{ $tour->slug }}" title="{{ $tour->name }}">
-                                            <img src="/storage/tour_images/{{ $tour->photo }}" class="img-responsive" alt="{{ $tour->name }}">
+                                            <img src="{{ url('images/tours_images/'.$tour->photo) }}" class="img-responsive" alt="{{ $tour->name }}">
                                         </a>
                                     </div>
                                     <div class="panel-footer">
@@ -121,7 +121,7 @@
                         <div class="col-md-6">
                             <div class="panel panel-default panel-raised panel-noroundcorners">
                                 <div class="panel-body">
-                                    <a href="/destinations/{{ $destination->slug }}">
+                                    <a href="{{  route('front.places.show', $destination->slug ? $destination->slug : $destination->id) }}">
                                         <img src="/storage/destination_images/{{ $destination->photo }}" class="img-responsive" alt="{{ $destination->name }}">
                                     </a>
                                 </div>

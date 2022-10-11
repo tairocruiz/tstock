@@ -6,31 +6,32 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('TourCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ route('admin.tour_categories.update', $tour_category) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label for="name">Edit Category Name</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ $category->name }}" required>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ $tour_category->name }}" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="special">Mark if Special</label>
                         <label>
-                            <input type="checkbox" @if($category->special) checked @endif name="special"> is it Special?
+                            <input type="checkbox" @if($tour_category->special) checked @endif name="special"> is it Special?
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="seo_title">Enter SEO Title</label> <small class="seo-title-character-counter pull-right"><span class="char-counter">65</span> characters remaining</small>
-                    <input type="text" id="seo_title" name="seo_title" class="form-control" maxlength="80" value="{{ $category->seo_title }}">
+                    <input type="text" id="seo_title" name="seo_title" class="form-control" maxlength="80" value="{{ $tour_category->seo_title }}">
                 </div>
                 <div class="form-group">
                     <label for="meta_description">Meta Description</label> <small class="meta-descr-character-counter pull-right"><span class="char-counter">160</span> characters remaining</small>
-                    <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="2" maxlength="175">{{ $category->meta_description }}</textarea>
+                    <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="2" maxlength="175">{{ $tour_category->meta_description }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="description">Category Description</label> <small class="description-character-counter pull-right"><span class="char-counter">0</span> characters total</small>
-                    <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10">{{ $category->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10">{{ $tour_category->description }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="photo">Change Category Photo</label> <small>(2200 by 800px)</small>
@@ -40,11 +41,12 @@
                     <input type="hidden" name="_method" value="PUT">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-2"></i>Save Changes</button>
                     <button type="reset" class="btn btn-default"><i class="fa fa-times mr-2"></i>Cancel</button>
-                    <button id="remove-tour-category-button" type="reset" class="btn btn-danger pull-right" title="Remove {{ $category->name }}"><i class="fa fa-trash-o mr-2"></i>Remove</button>
+                    <button id="remove-tour-category-button" type="reset" class="btn btn-danger pull-right" title="Remove {{ $tour_category->name }}"><i class="fa fa-trash-o mr-2"></i>Remove</button>
                 </div>
             </form>
-            <form id="remove-tour-category-form" action="{{ action('TourCategoryController@remove',$category->id) }}" method="POST">
-                {{ csrf_field() }}
+            <form id="remove-tour-category-form" action="{{ route('admin.tour_categories.destroy', $tour_category->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
                 <input type="hidden" name="_method" value="DELETE">
             </form>
         </div>
@@ -61,7 +63,7 @@
                         <tr>
                             <td>{{ $category->name }}</td>
                             <td class="w-5 text-center">
-                                <a href="/admin/tour-categories/{{ $category->id }}/edit" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('admin.tour_categories.edit', $category->id) }}" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

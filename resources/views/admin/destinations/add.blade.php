@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('DestinationController@store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.places.store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-8">
@@ -15,7 +15,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="category">Destination Category</label>
-                        <select name="category" id="category" class="form-control" required>
+                        <select name="category_id" id="category" class="form-control" required>
                             <option value="" selected disabled>--- Select Category ---</option>
                             @foreach($destination_categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="photo">Upload Destination Photo</label> <small class="text-muted">(1400 by  600px)</small>
-                            <input type="file" id="photo" name="photo" class="form-control">
+                            <input type="file" id="photo" name="photo" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tour;
+use App\Http\Requests\TourStoreRequest;
 use Illuminate\Http\Request;
+use App\Models\Page;
+use App\Models\DestinationCategory;
+use App\Models\TourCategory;
 use Illuminate\Support\Facades\Storage;
 
 class TourController extends Controller
@@ -12,13 +16,17 @@ class TourController extends Controller
     public function index()
     {
         $title = 'Tanzania Safaris & Tours';
-        return view('front.tours.index', compact('title'));
+        $tour_categories = TourCategory::all();
+        $tours = Tour::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        return view('front.tours.show', compact('title', 'tour_categories', 'tours', 'pages', 'destination_categories'));
     }
 
-    public function show($slug)
+    public function show(Tour $tour)
     {
-        $tour = Tour::where('slug',$slug)->firstOrFail();
-//        $title = $tour->name; $seo_title = $tour->seo_title;
+        //$tour = Tour::where('slug',$slug)->firstOrFail();
+        //$title = $tour->name; $seo_title = $tour->seo_title;
         $title = $tour->seo_title? $tour->seo_title : $tour->name;
 
         return view('front.tours.show', compact('tour','title'));
@@ -33,27 +41,17 @@ class TourController extends Controller
         return view('admin.tours.all', compact('title', 'tours'));
     }
 
-    public function add()
+    public function create()
     {
         $title = 'Add a new Tour package';
-        return view('admin.tours.add', compact('title'));
+        $tour_categories = TourCategory::all();
+        $tours = Tour::all();
+        return view('admin.tours.add', compact('title', 'tour_categories', 'tours'));
         //route()
     }
 
-    public function store(Request $request)
+    /*public function store(TourStoreRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'seo_title' => 'nullable|string|max:65',
-            'meta_description' => 'nullable|string|max:160',
-            'days' => 'required|numeric|max:99',
-            'best_time' => 'nullable|string|max:100',
-            'price' => 'nullable|numeric',
-            'description' => 'required',
-            'photo' => 'required|image|max:1000',
-            'categories' => 'required|array',
-        ]);
-
         $tour = new Tour;
 
         $tour->name = $request->name;
@@ -80,6 +78,22 @@ class TourController extends Controller
         $tour->categories()->attach($categories);
 
         return redirect('/admin/tours')->with('success', $tour->name.' have been successfully added as a new tour package');
+    }*/
+
+    public function store(TourStoreRequest $request)
+    {
+        Tour::create([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'meta_description' => $request->meta_description,
+            'photo' => $request->photo,
+            'price' => $request->price,
+            'days' => $request->days,
+            'best_time' => $request->best_time,
+            'tour_category_id' => $request->categories,
+        ]);
+
+        return redirect()->route('tours.index')->with('message', 'Tour added Successful');
     }
 
     public function edit($id)

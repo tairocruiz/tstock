@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/destination_images/{{ $destination->photo }}" class="img-responsive" alt="{{ $destination->name }}">
+            <img src="{{ url('images/destination_images/'.$destination->photo) }}" class="img-responsive" alt="{{ $destination->name }}">
         </div>
     </div>
     <div class="container main">
@@ -17,10 +17,10 @@
                 <span class="text-justify">{!! $destination->description !!}</span>
             </div>
             <div class="col-md-4">
-                @if($destination->category->destinations->count() > 1)
+                @if($destination->destination_category->destinations->count() > 1)
                     <div class="list-group">
                         <h4 class="list-group-item text-uppercase ubuntucondensed primary-bg-color">{{ $destination->category->name }} Destinations</h4>
-                        @foreach($destination->category->destinations->where('slug','!=',$destination->slug) as $place)
+                        @foreach($destination->destination_category->destinations->where('slug','!=',$destination->slug) as $place)
                             <a href="/destinations/{{ $place->slug }}" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>{{ $place->name }}</a>
                         @endforeach
                     </div>
