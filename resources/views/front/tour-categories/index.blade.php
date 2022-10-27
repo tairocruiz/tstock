@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/tour_images/safari-index.jpg" class="img-responsive" alt="Tanzania Safaris & Tours">
+            <img src="images/tour_category_images/{{ $tour_categories->random()->photo }}" class="img-responsive" alt="Tanzania Safaris & Tours">
         </div>
     </div>
     <div class="container main">
@@ -19,13 +19,21 @@
                         <div class="panel panel-noroundcorners panel-raised panel-default">
                             <a href="/safaris/{{ $category->slug }}" title="{{ $category->name }}">
                                 <div class="panel-body">
-                                    <img src="/storage/tour_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+                                    <img src="images/tour_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
                                 </div>
                             </a>
                             <div class="panel-footer">
                                 <h3 class="bira">
-                                    <i class="fa fa-folder-open-o text-danger mr-2"></i>{{ $category->name }}
-                                    @if($category->tours->count())<span class="text-muted pull-right assistant-light badged">{{ $category->tours->count() }}</span>@endif
+                                    @if($category->tours->count())<span class="text-muted assistant-light badge">{{ $category->tours->count() }}</span>@endif
+                                    {{ $category->name }}
+                                    @if($category->icon)
+                                        <span class="pull-right">
+                                            <img src="images/tour_category_icons/{{ $category->icon }}"
+                                                 alt="{{ $category->name }}" title="{{ $category->name }}"
+                                                 style="max-height: 40px"
+                                            >
+                                        </span>
+                                    @endif
                                 </h3>
                                 <hr>
                                 <div class="text-justify">{{ $category->meta_description }}</div>

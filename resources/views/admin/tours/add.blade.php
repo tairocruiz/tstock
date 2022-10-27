@@ -6,8 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <!--form action="{/{ //action('TourController@store') }}" method="POST" enctype="multipart/form-data"-->
-            <form action="{{ route('admin.tours.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('TourController@store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Enter Tour Package Name</label>
@@ -49,7 +48,7 @@
                         @foreach($tour_categories as $category)
                             <div class="col-md-4">
                                 <label>
-                                    <input type="checkbox" name="categories" value="{{ $category->id }}"> {{ $category->name }}
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->name }}
                                 </label>
                             </div>
                         @endforeach
@@ -73,7 +72,7 @@
                     @foreach($tours as $tour)
                         <tr>
                             <td>{{ $tour->name }}</td>
-                            <td class="w-5 text-center"><a href="{{ route('admin.tours.edit', $tour->id) }}" title="Edit {{ $tour->name }} details"><i class="fa fa-edit"></i></a></td>
+                            <td class="w-5 text-center"><a href="/admin/tours/{{ $tour->id }}/edit" title="Edit {{ $tour->name }} details"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                 @else

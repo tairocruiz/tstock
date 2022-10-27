@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Models\Page;
+use App\Models\TourCategory;
+use App\Models\DestinationCategory;
 use App\Models\PostCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -13,9 +16,13 @@ class PostController extends Controller
     public function show($categorySlug, $postSlug)
     {
         $post = Post::where('slug',$postSlug)->firstOrFail();
+        $posts = Post::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        $tour_categories = TourCategory::all();
         $category = PostCategory::where('slug',$categorySlug)->firstOrFail();
         $title = $post->seo_title ? $post->seo_title : $post->title;
-        return view('front.posts.show',compact('post','category','title'));
+        return view('front.posts.show',compact('post', 'destination_categories', 'category', 'title', 'posts', 'pages', 'tour_categories'));
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -23,7 +30,8 @@ class PostController extends Controller
     public function all()
     {
         $title = 'Listing all Posts';
-        return view('admin.posts.all',compact('title'));
+        $posts = Post::all();
+        return view('admin.posts.all',compact('title', 'posts'));
     }
 
     public function add()

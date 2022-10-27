@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/page_images/gallery.jpg" class="img-responsive" alt="Ngorongoro Crater, Tanzania">
+            <img src="images/page_images/gallery.jpg" class="img-responsive" alt="Ngorongoro Crater, Tanzania">
         </div>
     </div>
     <div class="container main">
@@ -24,28 +24,28 @@
                     @if($tours->count())
                         @foreach($tours as $tour)
                             <div class="col-sm-6 col-md-4 mb-3">
-                                <img src="/storage/tour_images/{{ $tour->photo }}" class="img-responsive" alt="{{ $tour->name }}">
+                                <img src="images/tour_images/{{ $tour->photo }}" class="img-responsive" alt="{{ $tour->name }}">
                             </div>
                         @endforeach
                     @endif
                     @if($destinations->count())
                         @foreach($destinations as $destination)
                             <div class="col-sm-6 col-md-4 mb-3">
-                                <img src="/storage/destination_images/{{ $destination->photo }}" class="img-responsive" alt="{{ $destination->name }}">
+                                <img src="images/destination_images/{{ $destination->photo }}" class="img-responsive" alt="{{ $destination->name }}">
                             </div>
                         @endforeach
                     @endif
                     @if($tour_categories->count())
                         @foreach($tour_categories as $tour_category)
                             <div class="col-sm-6 col-md-4 mb-3">
-                                <img src="/storage/tour_category_images/{{ $tour_category->photo }}" class="img-responsive" alt="{{ $tour_category->name }}">
+                                <img src="images/tour_category_images/{{ $tour_category->photo }}" class="img-responsive" alt="{{ $tour_category->name }}">
                             </div>
                         @endforeach
                     @endif
                     @if($destination_categories->count())
                         @foreach($destination_categories as $destination_category)
                             <div class="col-sm-6 col-md-4 mb-3">
-                                <img src="/storage/destination_category_images/{{ $destination_category->photo }}" class="img-responsive" alt="{{ $destination_category->name }}">
+                                <img src="images/destination_category_images/{{ $destination_category->photo }}" class="img-responsive" alt="{{ $destination_category->name }}">
                             </div>
                         @endforeach
                     @endif

@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="{{ route('admin.destination_categories.create') }}" class="btn btn-success pull-right">Add New Destination Category</a>
+                <a href="/admin/destination-categories/add" class="btn btn-success pull-right">Add New Destination Category</a>
             </h3>
             <hr>
             @if($destination_categories->count())
@@ -22,7 +22,7 @@
                             <td>{{ $category->name }}</td>
                             <td class="text-center">@if($category->destinations->count()) {{ $category->destinations->count() }} @else --- @endif</td>
                             <td>{{ $category->seo_title }}</td>
-                            <td class="w-5 text-center"><a href="{{ route('admin.destination_categories.edit', $category->id) }}"><i class="fa fa-edit"></i></a></td>
+                            <td class="w-5 text-center"><a href="/admin/destination-categories/{{ $category->id }}/edit"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                 </table>

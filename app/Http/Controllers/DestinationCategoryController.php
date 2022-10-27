@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DestinationCategory;
+use App\Http\Resources\DestinationCategoryResource;
+use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\TourCategory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class DestinationCategoryController extends Controller
@@ -13,18 +14,24 @@ class DestinationCategoryController extends Controller
     public function index()
     {
         $title = 'Tanzania Best Places To Go - Tanzania Destinations';
-        $destination_categories = DestinationCategory::all();
-        $pages = Page::all();
-        $tour_categories = TourCategory::all();
-        return view('front.destination-categories.index', compact('title', 'destination_categories', 'pages', 'tour_categories'));
+        return view('front.destination-categories.index', compact('title'));
+    }
+
+    public function all4api()
+    {
+        $destination_categories = DestinationCategory::with('destinations')->get();
+        return DestinationCategoryResource::collection($destination_categories);
     }
 
     public function show($slug)
     {
         $category = DestinationCategory::where('slug',$slug)->firstOrFail();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+        $destination_categories = DestinationCategory::all();
         $title = $category->seo_title? $category->seo_title : $category->name;
 
-        return view('front.destination-categories.show', compact('category','title'));
+        return view('front.destination-categories.show', compact('category','title', 'pages', 'destination_categories','tour_categories'));
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -110,13 +117,7 @@ class DestinationCategoryController extends Controller
         return redirect('/admin/destination-categories')->with('success', $category->name.' have been successfully updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DestinationCategory  $destinationCategory
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DestinationCategory $id)
+    public function remove($id)
     {
         $category = DestinationCategory::findOrFail($id);
 
@@ -127,6 +128,5 @@ class DestinationCategoryController extends Controller
         $category->delete();
 
         return redirect('/admin/destination-categories')->with('success', $category->name.' have been successfully deleted');
-
     }
 }

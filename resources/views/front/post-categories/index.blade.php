@@ -4,7 +4,8 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/tour_images/safari-index.jpg" class="img-responsive" alt="Tanzania Safaris & Tours">
+            @php( $t = $tours->count() > 3 ? $tours->random(3)->first() : $tours->first() )
+            <img src="images/tour_photos/{{ $t->photo }}" class="img-responsive" alt="{{ $t->name }}">
         </div>
     </div>
     <div class="container main">
@@ -19,7 +20,7 @@
                         <div class="panel panel-noroundcorners panel-raised panel-default">
                             <a href="/tourism/blog/{{ $category->slug }}" title="{{ $category->name }}">
                                 <div class="panel-body">
-                                    <img src="/storage/post_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+                                    <img src="images/post_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
                                 </div>
                             </a>
                             <div class="panel-footer">

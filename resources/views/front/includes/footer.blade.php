@@ -3,7 +3,7 @@
         <div class="col-lg-3">
             <h3 class="bira"><i class="fa fa-fw fa-info-circle mr-2"></i>About us - TMT</h3>
             <div class="text-justify">
-                {!! $pages->where('slug','about-us-tmt')->first()->description !!}
+                {!! Str::limit($pages->where('slug','about-us-tmt')->first()->description, 250) !!}
                 <a href="/{{ $pages->where('slug','about-us-tmt')->first()->slug }}" class="pull-right"><i class="fa fa-arrow-right mr-2"></i>More</a>
             </div>
         </div>
@@ -18,12 +18,23 @@
                             </a>
                         </li>
                     @endforeach
+                        <li><a href="/safari-tours/tailor-made"><i class="fa fa-angle-right mr-2"></i>Tailor Made Safari</a></li>
                 </ul>
             @endif
         </div>
         <div class="col-sm-4 col-lg-3">
             <h3 class="bira"><i class="fa fa-fw fa-map-pin mr-2"></i>Places to Go</h3>
-
+            @if($destination_categories->count())
+                <ul class="list-unstyled">
+                    @foreach($destination_categories->sortByDesc(function ($destination_category){return $destination_category->destinations->count();})->take(6) as $destination_category)
+                        <li>
+                            <a href="/places-to-go/{{ $destination_category->slug }}" title="{{ $destination_category->name }}">
+                                <i class="fa fa-angle-right mr-2"></i>{{ $destination_category->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
         <div class="col-sm-4 col-lg-3">
             <h3 class="bira"><i class="fa fa-fw fa-globe mr-2"></i>Contacts</h3>
@@ -49,6 +60,6 @@
         {{--bootom bar--}}
         <div class="col-md-12 bottom-bar-footer">
             <span class="assistant-light">&copy; {{ Date('Y') }} {{ config('app.name') }}. All Rights Reserved</span>
-            <span class="assistant-light pull-right">Developed & Powered by <span class="powered spaceage"><a href="https://blurredconsole.github.io" target="_blank" title="BluCo">BluCo</a></span></span>
+            <span class="assistant-light pull-right">Developed & Powered by <span class="powered spaceage"><a href="https://akiditechnologies.com" target="_blank" title="AKIDI Technologies">aKIDI</a></span></span>
         </div>
     </div>

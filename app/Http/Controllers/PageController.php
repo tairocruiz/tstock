@@ -2,56 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
-use Illuminate\Http\Request;
-
 use App\Mail\SafariBooked;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Tour;
+use App\Models\Page;
+use App\Models\TourCategory;
 use App\Models\Destination;
 use App\Models\DestinationCategory;
-use App\Models\TourCategory;
+use App\Models\Post;
+use App\Models\Tour;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\ErrorHandler\Debug;
 
 class PageController extends Controller
 {
-    /**
-     * @method aman for testinng
-     */
-    public function aman(){
-        return 'aman';
-    }
-
     public function home()
     {
         $title = 'Tanzania Safari Tours - Take Me To Tanzania Adventure Safaris';
         $tour_categories = TourCategory::all();
         $tours = Tour::all();
         $pages = Page::all();
+        $posts = Post::all();
         $destinations = Destination::all();
         $destination_categories = DestinationCategory::all();
         //str_limit($value, 100);
-        return view('front.pages.home', compact('title', 'tour_categories', 'tours', 'destinations', 'pages', 'destination_categories'));
+        return view('front.pages.home', compact('title', 'posts', 'tour_categories', 'tours', 'destinations', 'pages', 'destination_categories'));
     }
 
     public function show($slug)
     {
         $page = Page::where('slug',$slug)->firstOrFail();
-        $title = $page->seo_title? $page->seo_title : $page->name;
-
-        return view('front.pages.show', compact('page','title'));
-    }
-
-    public function gallery()
-    {
-        $title = 'View our differentiated Tanzania Safari Tour Photos and Videos';
-        $tours = Tour::all();
-        $destinations = Destination::all();
+        $pages = Page::all();
         $tour_categories = TourCategory::all();
         $destination_categories = DestinationCategory::all();
-        $pages = Page::all();
-        return view('front.pages.gallery',compact('title', 'tours', 'destinations', 'tour_categories', 'destination_categories', 'pages'));
+        $title = $page->seo_title? $page->seo_title : $page->name;
+
+        return view('front.pages.show', compact('page','title', 'pages', 'tour_categories', 'destination_categories'));
     }
 
     public function contacts(Request $request)
@@ -61,11 +46,11 @@ class PageController extends Controller
         if (!is_null($id)) {
             $booked_tour = Tour::findOrFail($id);
             $title = 'Book your Safari - '.$booked_tour->name;
+            return view('front.pages.contacts', compact('title','booked_tour'));
         } else {
             $title = 'Contact us for your Tanzania Safari';
+            return view('front.pages.contacts', compact('title'));
         }
-
-        return view('front.pages.contacts', compact('title','booked_tour'));
     }
 
     public function booking(Request $request)
@@ -86,11 +71,6 @@ class PageController extends Controller
 
         return redirect('/safari/contacts')->with('success','Success! your message have been successfully sent to us. We will get back to you in 3 Hrs time!');
 
-//        if (!$sent) {
-//            return back()->with('error', 'Sorry, We have technical errors. Your message was not sent. Please email us through info@takemetotanzania.com for further communications');
-//        } else {
-//            return redirect('/safari/contacts')->with('success','Success! your message have been successfully sent to us. We will get back to you in 3 Hrs time!');
-//        }
     }
 
     //------------------------------------------------------------------------------------------------------------------

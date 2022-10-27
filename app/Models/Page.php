@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Page extends Model
 {
-    use HasFactory;
+   // use Sluggable;
 
-    protected $fillable = [
-        'name',
-        'resource',
-        'seo_title',
-        'description',
-        'slug',
-        'photo',
-        'meta_description',
-    ];
-
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 }

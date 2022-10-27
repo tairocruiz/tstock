@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/post_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+            <img src="images/post_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
         </div>
     </div>
     <div class="container main">
@@ -13,7 +13,7 @@
                 <h1 class="bira"><i class="fa fa-folder-open-o text-danger mr-3"></i>
                     {{ $category->name }}
                     @if($category->posts->count())
-                        <span class="pull-right category-tours-count hidden-xs assistant-light">{{ $category->posts->count().str_plural(' post',$category->posts->count()) }}</span>
+                        <span class="pull-right category-tours-count hidden-xs assistant-light">{{ $category->posts->count().Str::plural(' post',$category->posts->count()) }}</span>
                     @endif
                 </h1>
                 <hr>
@@ -27,7 +27,7 @@
                                 <div class="panel panel-default panel-raised panel-noroundcorners">
                                     <div class="panel-body p-0">
                                         <a href="/{{ $category->slug }}/{{ $post->slug }}" title="{{ $post->title }}">
-                                            <img src="/storage/post_images/{{ $post->photo }}" class="img-responsive" alt="{{ $post->title }}">
+                                            <img src="images/post_images/{{ $post->photo }}" class="img-responsive" alt="{{ $post->title }}">
                                         </a>
                                     </div>
                                     <div class="panel-footer">
@@ -52,7 +52,7 @@
                                 @endif
                                 {{ $category->name }}
                                 @if($category->tours->count())
-                                    <span class="pull-right badge ubuntucondensed" title="{{ $category->tours->count() }} {{ str_plural('tour',$category->tours->count()) }}">{{ $category->tours->count() }}</span>
+                                    <span class="pull-right badge ubuntucondensed" title="{{ $category->tours->count() }} {{ Str::plural('tour',$category->tours->count()) }}">{{ $category->tours->count() }}</span>
                                 @endif
                             </a>
                         @endforeach

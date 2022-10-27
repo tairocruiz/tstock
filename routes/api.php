@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/admin/tours', [TourController::class, 'all']);
+Route::post('/admin/tours', [TourController::class, 'store']);
+Route::put('/admin/tours', [TourController::class, 'store']);
+Route::delete('/admin/tours/{id}', [TourController::class, 'remove']);
+Route::post('/admin/tours/{id}/featured', [TourController::class, 'toggleFeatured']);
+
+// Tailor Made Safari endpoint
+Route::post('/admin/tailored/booking', [TourController::class, 'TailorMadeBooking']);
+// Safari Enquiry endpoint
+Route::post('/admin/tour/enquiry', [TourController::class, 'TourEnquiry']);
+
+Route::delete('/admin/tour-day/{id}', [D2dController::class, 'remove']);
+
+Route::get('/admin/tour-categories', [TourCategoryController::class, 'all4api']);
+
+Route::get('/admin/destination-categories', [DestinationCategoryController::class, 'all4api']);

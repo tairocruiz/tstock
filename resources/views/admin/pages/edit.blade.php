@@ -6,9 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ route('admin.pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+            <form action="{{ action('PageController@update',$page->id) }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label for="name">Edit Page Name</label>
@@ -17,7 +16,7 @@
                     <div class="form-group col-md-3">
                         <label for="resource">Resource?</label>
                         <label>
-                            <input type="checkbox" value="1" name="resource" id="resource" @if($page->resource) checked @endif> Mark if Yes
+                            <input type="checkbox" name="resource" id="resource" @if($page->resource) checked @endif> Mark if Yes
                         </label>
                     </div>
                 </div>
@@ -52,9 +51,8 @@
                     </div>
                 </div>
             </form>
-            <form action="{{ route('admin.pages.destroy', $page->id) }}" id="remove-page-form" method="POST">
-                @csrf
-                @method('DELETE')
+            <form action="{{ action('PageController@remove',$page->id) }}" id="remove-page-form" method="POST">
+                {{ csrf_field() }}
                 <input type="hidden" name="_method" value="DELETE">
             </form>
         </div>

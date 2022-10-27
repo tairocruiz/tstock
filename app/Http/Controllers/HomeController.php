@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Stock;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -21,12 +19,10 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $stocks = Stock::all();
-        $users = User::all();
-        return view('home', compact('stocks', 'users'));
+        return view('home');
     }
 }

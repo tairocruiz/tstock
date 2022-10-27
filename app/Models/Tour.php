@@ -2,32 +2,40 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TourCategory;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Tour extends Model
 {
-    use HasFactory;
+    //use Sluggable;
 
-    //'name', 'slug', 'meta_description', 'photo', 'price', 'days', 'tour_category_id'
-    protected $fillable = [
-        'name',
-        'slug',
-        'seo_title',
-        'meta_description',
-        'photo',
-        'price',
-        'days',
-        'tour_category_id'
-    ];
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
     public function tour_category()
     {
-        return $this->belongsTo(TourCategory::class);
+        return $this->belongsToMany(TourCategory::class);
     }
 
-    public function tour_trips()
+    public function categories()
     {
-        return $this->hasMany(TourTrip::class);
+        return $this->belongsToMany('App\Models\TourCategory');
+    }
+
+    public function tour_days()
+    {
+        return $this->hasMany('App\Models\d2d');
     }
 }

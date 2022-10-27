@@ -6,30 +6,29 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ route('admin.destination_categories.update', $destinationCategory->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+            <form action="{{ action('DestinationCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Edit Destination Category Name</label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ $destinationCategory->name }}" required autofocus>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ $category->name }}" required autofocus>
                 </div>
                 <div class="form-group">
                     <label for="seo_title">Enter SEO Title</label> <small class="seo-title-character-counter pull-right"><span class="char-counter">65</span> characters remaining</small>
-                    <input type="text" id="seo_title" name="seo_title" class="form-control" maxlength="80" value="{{ $destinationCategory->seo_title }}">
+                    <input type="text" id="seo_title" name="seo_title" class="form-control" maxlength="80" value="{{ $category->seo_title }}">
                 </div>
                 <div class="form-group">
                     <label for="meta_description">Meta Description</label> <small class="meta-descr-character-counter pull-right"><span class="char-counter">160</span> characters remaining</small>
-                    <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="2" maxlength="175">{{ $destinationCategory->meta_description }}</textarea>
+                    <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="2" maxlength="175">{{ $category->meta_description }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="description">Destination Category Description</label> <small class="description-character-counter pull-right"><span class="char-counter">0</span> characters total</small>
-                    <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10">{{ $destinationCategory->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10">{{ $category->description }}</textarea>
                 </div>
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group">
                             <label for="photo">Change Destination Category Photo</label> <small class="text-muted">(2200 by  800px)</small>
-                            <input type="file" id="photo" name="photo" value="{{ $destinationCategory->photo }}" class="form-control" required>
+                            <input type="file" id="photo" name="photo" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -55,7 +54,7 @@
                         <tr>
                             <td>{{ $category->name }}</td>
                             <td class="w-5 text-center">
-                                <a href="{{ route('admin.destination_categories.edit', $category->id) }}" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
+                                <a href="/admin/destination-categories/{{ $category->id }}/edit" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

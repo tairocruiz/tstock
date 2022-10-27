@@ -6,9 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ route('admin.pages.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('POST')
+            <form action="{{ action('PageController@store') }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label for="name">Enter Page Name</label>
@@ -17,7 +16,7 @@
                     <div class="form-group col-md-3">
                         <label for="resource">Resource?</label>
                         <label>
-                            <input type="checkbox" value="1" name="resource" id="resource"> Mark if Yes
+                            <input type="checkbox" name="resource" id="resource"> Mark if Yes
                         </label>
                     </div>
                 </div>
@@ -65,7 +64,7 @@
                             <td>{{ $page->name }}</td>
                             <td class="text-center">@if($page->resource) <i class="fa fa-check text-success"></i> @endif</td>
                             <td class="w-5 text-center">
-                                <a href="{{ route('admin.pages.edit', $page->id) }}" title="Edit {{ $page->name }} details"><i class="fa fa-edit"></i></a>
+                                <a href="/admin/pages/{{ $page->id }}/edit" title="Edit {{ $page->name }} details"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

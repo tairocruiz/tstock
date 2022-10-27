@@ -3,23 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
-use App\Models\DestinationCategory;
-use Illuminate\Http\Request;
 use App\Models\Page;
 use App\Models\TourCategory;
+use Illuminate\Http\Request;
+use App\Models\DestinationCategory;
 use Illuminate\Support\Facades\Storage;
 
 class DestinationController extends Controller
 {
+//    public function index()
+//    {
+//        $title = 'Tanzania Destinations - Best Places to Visit in Tanzania';
+//        return view('front.destinations.index', compact('title'));
+//    }
+
     public function show($slug)
     {
-        $destination = Destination::firstWhere('slug', $slug);
-        $title = $destination->seo_title? $destination->seo_title : $destination->name;
-        $destination_categories = DestinationCategory::all();
+        $destination = Destination::firstWhere('slug',$slug);
         $pages = Page::all();
         $tour_categories = TourCategory::all();
-    
-        return view('front.destinations.show', compact('destination', 'title', 'destination_categories', 'pages', 'tour_categories'));
+        $title = $destination->seo_title? $destination->seo_title : $destination->name;
+        $destination_categories = DestinationCategory::all();
+        return view('front.destinations.show', compact('destination', 'tour_categories','title', 'pages', 'destination_categories'));
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -30,10 +35,11 @@ class DestinationController extends Controller
         return view('admin.destinations.add',compact('title'));
     }
 
-    public function index()
+    public function all()
     {
         $title = 'Listing all Destinations';
-        return view('admin.destinations.all',compact('title'));
+        $destinations = Destination::all();
+        return view('admin.destinations.all',compact('title', 'destinations'));
     }
 
     public function store(Request $request)

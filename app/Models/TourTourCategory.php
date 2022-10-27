@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class TourTourCategory extends Pivot
 {
-    protected $incrementing = true;
+    public $incrementing = true;
+
+    public function tour(){
+        return $this->belongsTo(Tour::class);
+    }
+
+    public function tour_category()
+    {
+        return $this->belongsTo(TourCategory::class);
+    }
 }

@@ -2,25 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\DestinationCategory;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Destination extends Model
 {
-    use HasFactory;
+    //use Sluggable;
 
-    protected $fillable = [
-        'name',
-        'seo_title',
-        'meta_description',
-        'description',
-        'destination_category_id',
-        'photo',
-    ];
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
     public function destination_category()
     {
-        return $this->belongsTo(DestinationCategory::class);
+        return $this->belongsTo('App\Models\DestinationCategory','destination_category_id');
     }
 }

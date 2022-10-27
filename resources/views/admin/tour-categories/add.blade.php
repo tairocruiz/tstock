@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ route('admin.tour_categories.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('TourCategoryController@store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">
@@ -16,7 +16,7 @@
                     <div class="form-group col-md-3">
                         <label for="special">Mark if Special</label>
                         <label>
-                            <input type="checkbox" value="1" name="special"> is it Special?
+                            <input type="checkbox" name="special"> is it Special?
                         </label>
                     </div>
                 </div>
@@ -32,9 +32,15 @@
                     <label for="description">Category Description</label> <small class="description-character-counter pull-right"><span class="char-counter">0</span> characters total</small>
                     <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="photo">Upload Category Photo</label> <small>(2200 by 800px)</small>
-                    <input type="file" name="photo" id="photo" class="form-control" required>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="photo">Upload Category Photo</label> <small>(2200 by 800px)</small>
+                        <input type="file" name="photo" id="photo" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="icon">Upload Category Icon</label>
+                        <input type="file" name="icon" id="icon" class="form-control">
+                    </div>
                 </div>
                 <div class="form-group pt-3">
                     <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-2"></i>Save</button>

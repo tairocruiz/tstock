@@ -8,191 +8,116 @@ use Illuminate\Support\Facades\Storage;
 
 class PostCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
 
     public function index()
     {
         $title = 'Tanzania Tourism Blog - News, Events and Articles';
-        return view('front.post-categories.index', compact('title'));
+        $post_categories = PostCategory::all();
+        return view('front.post-categories.index',compact('title'));
     }
 
-
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     *
-    public function create()
+    public function show($slug)
     {
-        //
+        $category = PostCategory::where('slug',$slug)->firstOrFail();
+        $title = $category->seo_title ? $category->seo_title : $category->name;
+        return view('front.post-categories.show',compact('category','title'));
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+    public function all()
+    {
+        $title = 'Listing all Post Categories';
+        return view('admin.post-categories.all',compact('title'));
+    }
+
+    public function add()
+    {
+        $title = 'Add new Post Category';
+        return view('admin.post-categories.add',compact('title'));
+    }
 
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'seo_title' => 'nullable|string|max:65',
+            'meta_description' => 'nullable|string',
+            'description' => 'required|string',
+            'photo' => 'required|image|max:500',
+        ]);
+
+        $category = new PostCategory;
+
+        $category->name = $request->name;
+        $category->seo_title = $request->seo_title;
+        $category->meta_description = $request->meta_description;
+        $category->description = $request->description;
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('/public/post_category_images');
+            $path = explode('/',$path);
+            $filename = $path[2];
+            $category->photo = $filename;
+        }
+
+        $category->save();
+
+        return redirect('/admin/post-categories')->with('success', 'New Post Category have been created');
     }
 
-
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PostCategory  $postCategory
-     * @return \Illuminate\Http\Response
-
-    public function show(PostCategory $postCategory)
+    public function edit($id)
     {
-        //
+        $category = PostCategory::findOrFail($id);
+        $title = 'Edit '.$category->name.' details';
+
+        return view('admin.post-categories.edit',compact('category','title'));
     }
 
-
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PostCategory  $postCategory
-     * @return \Illuminate\Http\Response
-
-    public function edit(PostCategory $postCategory)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'seo_title' => 'nullable|string|max:65',
+            'meta_description' => 'nullable|string',
+            'description' => 'required|string',
+            'photo' => 'nullable|image|max:500',
+        ]);
+
+        $category = PostCategory::findOrFail($id);
+
+        $category->name = $request->name;
+        $category->seo_title = $request->seo_title;
+        $category->meta_description = $request->meta_description;
+        $category->description = $request->description;
+
+        if ($request->hasFile('photo')) {
+            if (!is_null($category->photo)) {
+                Storage::delete('/public/post_category_images/'.$category->photo);
+            }
+            $path = $request->file('photo')->store('/public/post_category_images');
+            $path = explode('/',$path);
+            $filename = $path[2];
+            $category->photo = $filename;
+        }
+
+        $category->save();
+
+        return redirect('/admin/post-categories')->with('success', 'This Post Category have been successfully updated');
     }
 
-
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PostCategory  $postCategory
-     * @return \Illuminate\Http\Response
-     *
-    public function update(Request $request, PostCategory $postCategory)
+    public function remove($id)
     {
-        //
+        $category = PostCategory::findOrFail($id);
+
+        if ($category->posts->count()) {
+            return back()->with('error', 'Sorry, this Category have some posts attached. Please move them to other categories to proceed');
+        } else {
+            if (!is_null($category->photo)) {
+                Storage::delete('/public/post_category_images/'.$category->photo);
+            }
+            $category->delete();
+            return redirect('/admin/post-categories')->with('success', 'Category have have been successfully removed/deleted');
+        }
     }
-
-
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PostCategory  $postCategory
-     * @return \Illuminate\Http\Response
-    *public function destroy(PostCategory $postCategory)
-    *{
-        //
-    }*/
-
-        public function index()
-        {
-            $title = 'Tanzania Tourism Blog - News, Events and Articles';
-            return view('front.post-categories.index',compact('title'));
-        }
-
-        public function show($slug)
-        {
-            $category = PostCategory::where('slug',$slug)->firstOrFail();
-            $title = $category->seo_title ? $category->seo_title : $category->name;
-            return view('front.post-categories.show',compact('category','title'));
-        }
-
-        // -----------------------------------------------------------------------------------------------------------------
-
-        public function all()
-        {
-            $title = 'Listing all Post Categories';
-            return view('admin.post-categories.all',compact('title'));
-        }
-
-        public function add()
-        {
-            $title = 'Add new Post Category';
-            return view('admin.post-categories.add',compact('title'));
-        }
-
-        public function store(Request $request)
-        {
-            $this->validate($request, [
-                'name' => 'required|string|max:255',
-                'seo_title' => 'nullable|string|max:65',
-                'meta_description' => 'nullable|string',
-                'description' => 'required|string',
-                'photo' => 'required|image|max:500',
-            ]);
-
-            $category = new PostCategory;
-
-            $category->name = $request->name;
-            $category->seo_title = $request->seo_title;
-            $category->meta_description = $request->meta_description;
-            $category->description = $request->description;
-
-            if ($request->hasFile('photo')) {
-                $path = $request->file('photo')->store('/public/post_category_images');
-                $path = explode('/',$path);
-                $filename = $path[2];
-                $category->photo = $filename;
-            }
-
-            $category->save();
-
-            return redirect('/admin/post-categories')->with('success', 'New Post Category have been created');
-        }
-
-        public function edit($id)
-        {
-            $category = PostCategory::findOrFail($id);
-            $title = 'Edit '.$category->name.' details';
-
-            return view('admin.post-categories.edit',compact('category','title'));
-        }
-
-        public function update(Request $request, $id)
-        {
-            $this->validate($request, [
-                'name' => 'required|string|max:255',
-                'seo_title' => 'nullable|string|max:65',
-                'meta_description' => 'nullable|string',
-                'description' => 'required|string',
-                'photo' => 'nullable|image|max:500',
-            ]);
-
-            $category = PostCategory::findOrFail($id);
-
-            $category->name = $request->name;
-            $category->seo_title = $request->seo_title;
-            $category->meta_description = $request->meta_description;
-            $category->description = $request->description;
-
-            if ($request->hasFile('photo')) {
-                if (!is_null($category->photo)) {
-                    Storage::delete('/public/post_category_images/'.$category->photo);
-                }
-                $path = $request->file('photo')->store('/public/post_category_images');
-                $path = explode('/',$path);
-                $filename = $path[2];
-                $category->photo = $filename;
-            }
-
-            $category->save();
-
-            return redirect('/admin/post-categories')->with('success', 'This Post Category have been successfully updated');
-        }
-
-        public function remove($id)
-        {
-            $category = PostCategory::findOrFail($id);
-
-            if ($category->posts->count()) {
-                return back()->with('error', 'Sorry, this Category have some posts attached. Please move them to other categories to proceed');
-            } else {
-                if (!is_null($category->photo)) {
-                    Storage::delete('/public/post_category_images/'.$category->photo);
-                }
-                $category->delete();
-                return redirect('/admin/post-categories')->with('success', 'Category have have been successfully removed/deleted');
-            }
-        }
-
 }

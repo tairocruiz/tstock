@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/destination_images/destinations.jpg" class="img-responsive" alt="Tanzania Destinations">
+            <img src="images/destination_images/destinations.jpg" class="img-responsive" alt="Tanzania Destinations">
         </div>
     </div>
     <div class="container main">
@@ -26,7 +26,7 @@
                             <div class="panel panel-noroundcorners panel-raised panel-default">
                                 <a href="/places-to-go/{{ $category->slug }}" title="{{ $category->name }}">
                                     <div class="panel-body">
-                                        <img src="/storage/destination_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+                                        <img src="images/destination_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
                                     </div>
                                 </a>
                                 <div class="panel-footer">
@@ -35,7 +35,7 @@
                                         <span class="pull-right badge assistant-light">{{ $category->destinations->count() }}</span>
                                     </h3>
                                     <hr>
-                                    <div class="text-justify">{!! str_limit($category->description, 170) !!}</div>
+                                    <div class="text-justify">{!! Str::limit($category->description, 170) !!}</div>
                                     <hr>
                                     <a href="/places-to-go/{{ $category->slug }}" class="btn btn-tmt-default"><i class="fa fa-angle-right mr-2"></i>MORE</a>
                                 </div>

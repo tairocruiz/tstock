@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="/storage/post_images/{{ $post->photo }}" class="img-responsive" alt="{{ $post->title }}">
+            <img src="images/post_images/{{ $post->photo }}" class="img-responsive" alt="{{ $post->title }}">
         </div>
     </div>
     <div class="container main">

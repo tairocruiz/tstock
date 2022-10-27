@@ -2,104 +2,127 @@
 
 namespace App\Http\Controllers\Safaris;
 
-use App\Http\Controllers\Controller;
 use App\Models\DestinationCategory;
+use App\Http\Resources\DestinationCategoryResource;
 use Illuminate\Http\Request;
-use App\Http\Requests\DestinationCategoryStoreRequest;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class DestinationCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $title = 'List all Destination Categories';
-        $destination_categories = DestinationCategory::all();
-        return view('admin.destination-categories.all', compact('title', 'destination_categories'));
+        $title = 'Tanzania Best Places To Go - Tanzania Destinations';
+        return view('front.destination-categories.index', compact('title'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function all4api()
+    {
+        $destination_categories = DestinationCategory::with('destinations')->get();
+        return DestinationCategoryResource::collection($destination_categories);
+    }
+
+    public function show($slug)
+    {
+        $category = DestinationCategory::where('slug',$slug)->firstOrFail();
+        $title = $category->seo_title? $category->seo_title : $category->name;
+
+        return view('front.destination-categories.show', compact('category','title'));
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    public function all()
+    {
+        $title = 'List all Destination Categories';
+        return view('admin.destination-categories.all', compact('title'));
+    }
+
+    public function add()
     {
         $title = 'Add a new Destination Category';
-        $destination_categories = DestinationCategory::all();
-        return view('admin.destination-categories.add', compact('title', 'destination_categories'));
+        return view('admin.destination-categories.add', compact('title'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(DestinationCategoryStoreRequest $request, DestinationCategory $destinationCategory)
+    public function store(Request $request)
     {
-        $this->WekaPicha($request, 'destination_category_images');
-        $request->photo = $this->image;
-        //$destinationCategory->create($request->all());
-       // $category = new DestinationCategory;
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'seo_title' => 'nullable|string|max:65',
+            'meta_description' => 'nullable|string|max:160',
+            'description' => 'nullable',
+            'photo' => 'required|image|max:500|min:200',
+        ]);
 
-        $destinationCategory->name = $request->name;
-        $destinationCategory->seo_title = $request->seo_title;
-        $destinationCategory->meta_description = $request->meta_description;
-        $destinationCategory->description = $request->description;
-        $destinationCategory->photo = $request->photo;
-        $destinationCategory->save();
-        return redirect()->route('admin.destination_categories.index')->with('message', 'Destination Category created successfully');
+        $category = new DestinationCategory;
+
+        $category->name = $request->name;
+        $category->seo_title = $request->seo_title;
+        $category->meta_description = $request->meta_description;
+        $category->description = $request->description;
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('/public/destination_category_images');
+            $path = explode('/',$path);
+            $fileName = $path[2];
+            $category->photo = $fileName;
+        }
+
+        $category->save();
+
+        return redirect('/admin/destination-categories')->with('success', $category->name.' have been successfully added');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($id)
     {
-        //
+        $category = DestinationCategory::findOrFail($id);
+        $title = 'Edit '.$category->name.' details';
+
+        return view('admin.destination-categories.edit', compact('category','title'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DestinationCategory $destinationCategory)
+    public function update(Request $request, $id)
     {
-        $title = 'Edit '.$destinationCategory->name.' details';
-        $destination_categories = DestinationCategory::all();
-        return view('admin.destination-categories.edit', compact('destinationCategory', 'title', 'destination_categories'));
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'seo_title' => 'nullable|string|max:65',
+            'meta_description' => 'nullable|string|max:160',
+            'description' => 'nullable',
+            'photo' => 'nullable|image|max:500|min:200',
+        ]);
+
+        $category = DestinationCategory::findOrFail($id);
+
+        $category->name = $request->name;
+        $category->seo_title = $request->seo_title;
+        $category->meta_description = $request->meta_description;
+        $category->description = $request->description;
+
+        if ($request->hasFile('photo')) {
+            if (!is_null($category->photo)) {
+                Storage::delete('/public/destination_category_images/'.$category->photo);
+            }
+            $path = $request->file('photo')->store('/public/destination_category_images');
+            $path = explode('/',$path);
+            $fileName = $path[2];
+            $category->photo = $fileName;
+        }
+
+        $category->save();
+
+        return redirect('/admin/destination-categories')->with('success', $category->name.' have been successfully updated');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(DestinationCategoryStoreRequest $request, DestinationCategory $destinationCategory)
+    public function remove($id)
     {
-        $destinationCategory->update($request->all());
-        return redirect()->route('admin.destination_categories.index')->with('message', 'Destination category updated Successfully');
-    }
+        $category = DestinationCategory::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (!is_null($category->photo)) {
+            Storage::delete('/public/destination_category_images/'.$category->photo);
+        }
+
+        $category->delete();
+
+        return redirect('/admin/destination-categories')->with('success', $category->name.' have been successfully deleted');
     }
 }
