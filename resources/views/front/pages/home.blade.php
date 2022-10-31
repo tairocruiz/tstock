@@ -15,7 +15,7 @@
             <div class="col-md-6 welcome-photo p-0">
                 <div class="image-container">
                     @if($tours->count())
-                        <img src="/images/tour_photos/{{ $tours->random()->photo }}" alt="TakeMeToTanzania">
+                        <img src="{{ asset('images/tour_photos/'.$tours->random()->photo) }}" alt="TakeMeToTanzania"/>
                     @endif
                 </div>
                 <div>
@@ -58,7 +58,7 @@
                                     <p><a href="/safaris/{{ $tour_category1->slug }}" class="btn btn-tmt-default">Read More</a></p>
                                 </div>
                                 <div class="image-overlay"></div>
-                                <img src="/images/tour_category_images/{{ $tour_category1->photo }}" alt="{{ $tour_category1->name }}">
+                                <img src="{{ asset('images/tour_category_images/'.$tour_category1->photo) }}" alt="{{ $tour_category1->name }}"/>
                             </div>
                         @else
                             <div class="col-sm-6 col-md-3 image-container">
@@ -72,7 +72,7 @@
                                     <p><a href="/safaris/{{ $tour_category1->slug }}" class="btn btn-tmt-default">Read More</a></p>
                                 </div>
                                 <div class="image-overlay"></div>
-                                <img src="/images/tour_category_images/{{ $tour_category1->photo }}" alt="{{ $tour_category1->name }}">
+                                <img src="{{ asset('images/tour_category_images/'.$tour_category1->photo) }}" alt="{{ $tour_category1->name }}"/>
                             </div>
                         @endif
                     @endforeach
@@ -89,7 +89,7 @@
                                     <p><a href="/safaris/{{ $tour_category2->slug }}" class="btn btn-tmt-default">Read More</a></p>
                                 </div>
                                 <div class="image-overlay"></div>
-                                <img src="images/tour_category_images/{{ $tour_category2->photo }}" alt="{{ $tour_category2->name }}">
+                                <img src="{{ asset('images/tour_category_images/'.$tour_category2->photo) }}" alt="{{ $tour_category2->name }}"/>
                             </div>
                         @else
                             <div class="col-sm-6 col-md-3 image-container">
@@ -103,7 +103,7 @@
                                     <p><a href="/safaris/{{ $tour_category2->slug }}" class="btn btn-tmt-default" aria-details="{{ $tour_category2->slug}}">Read More</a></p>
                                 </div>
                                 <div class="image-overlay"></div>
-                                <img src="images/tour_category_images/{{ $tour_category2->photo }}" alt="{{ $tour_category2->name }}">
+                                <img src="{{ asset('images/tour_category_images/'.$tour_category2->photo) }}" alt="{{ $tour_category2->name }}"/>
                             </div>
                         @endif
                     @endforeach
@@ -115,19 +115,19 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="row">
-                                <div class="col-xs-3 text-center p-0"><img src="images/icons/discover-tours.png" class="img-responsive" alt="Dicover Tours"> STEP 1</div>
+                                <div class="col-xs-3 text-center p-0"><img src="{{ asset('images/icons/discover-tours.png') }}" class="img-responsive" alt="Dicover Tours"/> STEP 1</div>
                                 <div class="col-xs-9"><strong>Discover</strong><p>Browse our website for tour ideas. Send us a request and let us know what you’re looking for.</p></div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="row">
-                                <div class="col-xs-3 text-center p-0"><img src="images/icons/customize-tour.png" class="img-responsive" alt="Customize Tour"> STEP 2</div>
+                                <div class="col-xs-3 text-center p-0"><img src="{{ asset('images/icons/customize-tour.png') }}" class="img-responsive" alt="Customize Tour"/> STEP 2</div>
                                 <div class="col-xs-9"><strong>Customize</strong><p>Based on your request we will send you our best tour proposal. You can then get an itinerary customized to fit your preferences.</p></div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="row">
-                                <div class="col-xs-3 text-center p-0"><img src="images/icons/book-trip.png" class="img-responsive" alt=""> STEP 3</div>
+                                <div class="col-xs-3 text-center p-0"><img src="{{ asset('images/icons/book-trip.png') }}" class="img-responsive" alt="Book tour"/> STEP 3</div>
                                 <div class="col-xs-9"><strong>Book Your Trip</strong><p>Once you’re satisfied with our customized proposal, book your chosen trip with TakeMeToTanzania</p></div>
                             </div>
                         </div>
@@ -144,7 +144,7 @@
                     <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-body p-0 featured-tour-photo">
-                                <a href="/tours/{{ $featured_tour->slug }}"><img src="images/tour_photos/{{ $featured_tour->photo }}" alt="{{ $featured_tour->name }}"></a>
+                                <a href="/tours/{{ $featured_tour->slug }}"><img src="{{ asset('images/tour_photos/'.$featured_tour->photo) }}" alt="{{ $featured_tour->name }}"/></a>
                             </div>
                             <div class="panel-body featured-tour-content">
                                 <h4 class="ubuntucondensed text-uppercase mt-0 mb-2">
@@ -157,10 +157,10 @@
 {{--                                    <i class="fa fa-fw fa-folder-open-o mr-1"></i>--}}
                                     @foreach($featured_tour->categories as $other_tour_category)
                                         @if($other_tour_category->icon)
-                                            <img src="images/tour_category_icons/{{ $other_tour_category->icon }}"
+                                            <img src="{{ asset('images/tour_category_icons/'.$other_tour_category->icon) }}"
                                                  alt="{{ $other_tour_category->name }}" title="{{ $other_tour_category->name }}"
                                                  style="max-height: 25px; margin-right: 15px"
-                                            >
+                                            />
                                         @endif
                                     @endforeach
                                 </div>
@@ -191,7 +191,7 @@
                                     <div class="date">{{ $post->created_at->format('d') }}</div>
                                     <div class="month">{{ $post->created_at->format('M') }}</div>
                                 </div>
-                                <a href="/{{ $post->categories->first()->slug }}/{{ $post->slug }}"><img src="images/post_images/{{ $post->photo }}" alt="{{ $post->name }}"></a>
+                                <a href="/{{ $post->categories->first()->slug }}/{{ $post->slug }}"><img src="{{ asset('images/post_images/'.$post->photo) }}" alt="{{ $post->name }}"/></a>
                             </div>
                             <div class="panel-body post-content">
                                 <h4 class="text-uppercase ubuntucondensed">{{ $post->title }}</h4>

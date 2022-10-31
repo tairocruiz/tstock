@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\PostController;
     use App\Http\Controllers\TourCategoryController;
     use App\Http\Controllers\TourController;
+    use App\Http\Controllers\PhotoController;
     use App\Http\Controllers\PageController;
 
 /*
@@ -137,11 +138,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 Route::group(['prefix' => '', 'as' => 'front.'], function () {
+    Route::resources([
+        'places' => DestinationController::class,
+        'destination_categories' => DestinationCategoryController::class,
+        'post_categories' => PostCategoryController::class,
+        'posts' => PostController::class,
+        'pages' => PageController::class,
+        'tours' => TourController::class,
+        'tour_categories' => TourCategoryController::class,
+    ]);
 
 //================ Pages ===================================================
     Route::get('/', [PageController::class, 'home']);
     Route::get('/{page}', [PageController::class, 'show']);
-    Route::post('/safari/booking', [PageController::class, 'booking']);
+    //Route::post('/safari/booking', [PageController::class, 'booking']);
+    Route::post('/safari/booking', 'App\Http\Controllers\PageController@booking');
     Route::any('/safari/contacts', [PageController::class, 'contacts']);
 
 //=================  Photo =================================================

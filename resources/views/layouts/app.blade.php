@@ -1,3 +1,4 @@
+@can('tour_access')
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -78,3 +79,4 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
+@endcan

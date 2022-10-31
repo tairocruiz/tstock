@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="images/post_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+            <img src="{{ asset('images/post_category_images/'.$category->photo) }}" class="img-responsive" alt="{{ $category->name }}"/>
         </div>
     </div>
     <div class="container main">
@@ -27,7 +27,7 @@
                                 <div class="panel panel-default panel-raised panel-noroundcorners">
                                     <div class="panel-body p-0">
                                         <a href="/{{ $category->slug }}/{{ $post->slug }}" title="{{ $post->title }}">
-                                            <img src="images/post_images/{{ $post->photo }}" class="img-responsive" alt="{{ $post->title }}">
+                                            <img src="{{ asset('images/post_images/'.$post->photo) }}" class="img-responsive" alt="{{ $post->title }}"/>
                                         </a>
                                     </div>
                                     <div class="panel-footer">

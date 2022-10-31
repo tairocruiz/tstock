@@ -60,6 +60,6 @@
         {{--bootom bar--}}
         <div class="col-md-12 bottom-bar-footer">
             <span class="assistant-light">&copy; {{ Date('Y') }} {{ config('app.name') }}. All Rights Reserved</span>
-            <span class="assistant-light pull-right">Developed & Powered by <span class="powered spaceage"><a href="https://akiditechnologies.com" target="_blank" title="AKIDI Technologies">aKIDI</a></span></span>
+            <span class="assistant-light pull-right">Developed<span class="powered"><a href="https://blurredconsole.github.io" target="_blank" title="BluCo">BluCo</a></span></span>
         </div>
     </div>

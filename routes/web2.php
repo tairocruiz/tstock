@@ -77,7 +77,7 @@ Route::group(['prefix' => '', 'as' => 'front.'], function () {
         //Route::get('/{category}/{post}',[PostController::class, 'show']);
         Route::any('/safari/cont', [PageController::class, 'aman']);
 
-       
+
 });
 
 

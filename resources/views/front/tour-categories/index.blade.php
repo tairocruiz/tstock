@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="images/tour_category_images/{{ $tour_categories->random()->photo }}" class="img-responsive" alt="Tanzania Safaris & Tours">
+            <img src="{{ asset('images/tour_category_images/'.$tour_categories->random()->photo) }}" class="img-responsive" alt="Tanzania Safaris & Tours"/>
         </div>
     </div>
     <div class="container main">
@@ -19,7 +19,7 @@
                         <div class="panel panel-noroundcorners panel-raised panel-default">
                             <a href="/safaris/{{ $category->slug }}" title="{{ $category->name }}">
                                 <div class="panel-body">
-                                    <img src="images/tour_category_images/{{ $category->photo }}" class="img-responsive" alt="{{ $category->name }}">
+                                    <img src="{{ asset('images/tour_category_images/'.$category->photo) }}" class="img-responsive" alt="{{ $category->name }}"/>
                                 </div>
                             </a>
                             <div class="panel-footer">
@@ -28,10 +28,10 @@
                                     {{ $category->name }}
                                     @if($category->icon)
                                         <span class="pull-right">
-                                            <img src="images/tour_category_icons/{{ $category->icon }}"
+                                            <img src="{{ asset('images/tour_category_icons/'.$category->icon) }}"
                                                  alt="{{ $category->name }}" title="{{ $category->name }}"
                                                  style="max-height: 40px"
-                                            >
+                                            />
                                         </span>
                                     @endif
                                 </h3>

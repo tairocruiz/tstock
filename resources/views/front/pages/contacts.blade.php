@@ -5,9 +5,9 @@
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
             @if(isset($booked_tour))
-                <img src="images/tour_photos/{{ $booked_tour->photo }}" class="img-responsive" alt="{{ $booked_tour->name }}">
+                <img src="{{ asset('images/tour_photos/'.$booked_tour->photo) }}" class="img-responsive" alt="{{ $booked_tour->name }}"/>
             @else
-                <img src="images/page_images/contacts.jpg" class="img-responsive" alt="Contact us for Tanzania Safari">
+                <img src="{{ asset('images/page_images/contacts.jpg') }}" class="img-responsive" alt="Contact us for Tanzania Safari"/>
             @endif
         </div>
     </div>
@@ -22,10 +22,11 @@
                 <p>Are you happy with your choices? send your ideas to us via the form below with a time that's best to call you or simply give us a call to book your tailor-made safari of a lifetime. You could even save your shortlist for later, or share them with friends and family.</p>
             </div>
             <div class="col-md-6" style="border-right: 1px dashed #e0dfe3">
-                <form action="{{ action('PageController@booking') }}" method="POST">
-                    {{ csrf_field() }}
+                <form action="{{ action('App\Http\Controllers\PageController@booking') }}" method="POST">
+                    @method('POST')
+                   {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name">Your Full Name</label>
+                        <label for="name">Your Fulli Name</label>
                         <input type="text" name="name" id="name" class="input-lg form-control" placeholder="your full name" required autofocus>
                     </div>
                     <div class="row">

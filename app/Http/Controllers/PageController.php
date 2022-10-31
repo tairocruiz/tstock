@@ -42,14 +42,18 @@ class PageController extends Controller
     public function contacts(Request $request)
     {
         $id = $request->id;
+        $tours = Tour::all();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+        $destination_categories = DestinationCategory::all();
 
         if (!is_null($id)) {
             $booked_tour = Tour::findOrFail($id);
             $title = 'Book your Safari - '.$booked_tour->name;
-            return view('front.pages.contacts', compact('title','booked_tour'));
+            return view('front.pages.contacts', compact('title', 'destination_categories', 'booked_tour', 'tour_categories', 'tours', 'pages'));
         } else {
             $title = 'Contact us for your Tanzania Safari';
-            return view('front.pages.contacts', compact('title'));
+            return view('front.pages.contacts', compact('title', 'destination_categories', 'tours', 'pages', 'tour_categories'));
         }
     }
 

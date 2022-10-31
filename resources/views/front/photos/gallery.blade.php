@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="images/page_images/gallery.jpg" class="img-responsive" alt="Ngorongoro Crater, Tanzania">
+            <img src="{{ asset('images/page_images/gallery.jpg') }}" class="img-responsive" alt="Ngorongoro Crater, Tanzania"/>
         </div>
     </div>
     <div class="container main">
@@ -22,7 +22,7 @@
                     @if($photos->count())
                         @foreach($photos as $photo)
                             <div class="photo-object-container" title="{{ $photo->name }}">
-                                <img src="images/gallery_photos/{{ $photo->photo }}" alt="{{ $photo->name }}">
+                                <img src="{{ asset('images/gallery_photos/'.$photo->photo) }}" alt="{{ $photo->name }}">
                                 <h4 class="text-center ubuntucondensed">{{ $photo->name }}</h4>
                                 <div class="small para text-justify">{!! $photo->description !!}</div>
                             </div>

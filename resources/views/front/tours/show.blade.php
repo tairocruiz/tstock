@@ -1,11 +1,11 @@
-
+ho
 @extends('layouts.front')
 
 @section('content')
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="images/tour_photos/{{ $tour->photo }}" class="img-responsive" alt="{{ $tour->name }}">
+            <img src="{{ asset('images/tour_photos/'.$tour->photo)}}" class="img-responsive" alt="{{ $tour->name }}">
         </div>
     </div>
     <div class="container main tour_show_page">
@@ -18,7 +18,7 @@
 {{--                            @foreach($tour->categories as $the_category)--}}
 {{--                                @if($the_category->icon)--}}
 {{--                                    <span>--}}
-{{--                                        <img src="images/tour_category_icons/{{ $the_category->icon }}"--}}
+{{--                                        <img src="{{ asset('images/tour_category_icons/{{ $the_category->icon }}"--}}
 {{--                                             alt="{{ $the_category->name }}"--}}
 {{--                                             title="{{ $the_category->name }}"--}}
 {{--                                             style="margin-left: 15px; max-height: 30px; filter: drop-shadow(0 1px #ffffff)"--}}
@@ -32,7 +32,7 @@
                                 @foreach($tour->categories as $tour_category)
                                     <li class="category-list-item">
 {{--                                        @if($tour_category->icon)--}}
-{{--                                            <img src="images/tour_category_icons/{{ $tour_category->icon }}"--}}
+{{--                                            <img src="{{ asset('images/tour_category_icons/{{ $tour_category->icon }}"--}}
 {{--                                                 alt="{{ $tour_category->name }}" title="{{ $tour_category->name }}"--}}
 {{--                                                 style="max-height: 20px; filter: grayscale(1); margin-right: 10px"--}}
 {{--                                            >--}}
@@ -46,7 +46,7 @@
                             <ul class="overview-days-list list-unstyled mb-3">
                                 @foreach($tour->tour_days->sortBy('day_order') as $tour_day)
                                     <li class="mt-2 mb-2">
-                                        <span class="overview-day-icon-container mr-2" title="{{ $tour_day->activity }}"><i class="first-day-icon fa fa-fw fa-{{ $tour_day->activity }} text-danger"></i></span>
+                                        <span class="overview-day-icon-container mr-2" title="{{ $tour_day->activity }}"><i class="first-day-icon fas fa-fw fa-{{ $tour_day->activity }} text-danger"></i></span>
                                         <strong>Day {{ $tour_day->day_order }} : </strong><span class="ubuntucondensed">{{ Str::limit($tour_day->day_title,100) }}</span>
                                     </li>
                                 @endforeach
@@ -56,7 +56,7 @@
                     <div class="col-md-4">
                         @if(!is_null($tour->map))
                             <div class="mt-3">
-                                <img src="images/tour_maps/{{ $tour->map }}" class="img-responsive" alt="Route Map for this {{ $tour->name }}">
+                                <img src="{{ asset('images/tour_maps/'.$tour->map) }}" class="img-responsive" alt="Route Map for this {{ $tour->name }}">
                             </div>
                             <div class="mt-2 mb-3 text-center">
                                 <h4 class="ubuntucondensed">THIS TOUR IS NOT EXACTLY WHAT YOU WANT?</h4>
@@ -75,7 +75,7 @@
                         @foreach($tour->categories as $the_category)
                             @if($the_category->icon)
                                 <span class="pull-right">
-                                    <img src="images/tour_category_icons/{{ $the_category->icon }}"
+                                    <img src="{{ asset('images/tour_category_icons/'.$the_category->icon ) }}"
                                          alt="{{ $the_category->name }}"
                                          title="{{ $the_category->name }}"
                                          style="margin-left: 30px; max-height: 30px; filter: drop-shadow(0 1px #ffffff)"
@@ -105,20 +105,20 @@
                                     <div class="row mt-2">
                                         @if($panel_tour_day->day_photo1 && $panel_tour_day->day_photo2)
                                             <div class="col-md-6" title="{{ $panel_tour_day->name }}">
-                                                <img src="images/day2day_photos/{{ $panel_tour_day->day_photo1 }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo1">
+                                                <img src="{{ asset('images/day2day_photos/'.$panel_tour_day->day_photo1) }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo1">
                                             </div>
                                             <div class="col-md-6" title="{{ $panel_tour_day->name }}">
-                                                <img src="images/day2day_photos/{{ $panel_tour_day->day_photo2 }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo2">
+                                                <img src="{{ asset('images/day2day_photos/'.$panel_tour_day->day_photo2) }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo2">
                                             </div>
                                         @else
                                             @if($panel_tour_day->day_photo1)
                                                 <div class="col-md-12" title="{{ $panel_tour_day->name }}">
-                                                    <img src="images/day2day_photos/{{ $panel_tour_day->day_photo1 }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo1">
+                                                    <img src="{{ asset('images/day2day_photos/'.$panel_tour_day->day_photo1) }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo1">
                                                 </div>
                                             @endif
                                             @if($panel_tour_day->day_photo2)
                                                 <div class="col-md-12" title="{{ $panel_tour_day->name }}">
-                                                    <img src="images/day2day_photos/{{ $panel_tour_day->day_photo2 }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo2">
+                                                    <img src="{{ asset('images/day2day_photos/'.$panel_tour_day->day_photo2) }}" class="img-responsive" alt="{{ $panel_tour_day->day_title }} photo2">
                                                 </div>
                                             @endif
                                         @endif
@@ -147,7 +147,7 @@
                     <h2 class="text-uppercase mb-3 assistant-light">Useful Information</h2>
                     {!! $tour->useful_information !!}
                     <div class="text-center mt-3 mb-3">
-                        <form action="safari/contacts" method="post">
+                        <form action="{{ action('App\Http\Controllers\PageController@contacts') }}" method="post">
                             @csrf
                             <button class="btn btn-lg btn-tmt-default assistant-light"><span class="px-2">REQUEST THIS TOUR</span></button><br>
                             <small class="text-muted">Free service, No credit card required</small>
@@ -166,7 +166,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body p-0">
                                 <a href="/tours/{{ $other_tour->slug }}">
-                                    <img src="images/tour_photos/{{ $other_tour->photo }}" class="img-responsive" alt="{{ $other_tour->name }}">
+                                    <img src="{{ asset('images/tour_photos/'.$other_tour->photo) }}" class="img-responsive" alt="{{ $other_tour->name }}">
                                 </a>
                             </div>
                             <div class="panel-body">
@@ -181,7 +181,7 @@
                                     <i class="fa fa-fw fa-folder-open-o mr-1"></i>
                                     @foreach($other_tour->categories as $other_tour_category)
                                         @if($other_tour_category->icon)
-                                            <img src="images/tour_category_icons/{{ $other_tour_category->icon }}"
+                                            <img src="{{ asset('images/tour_category_icons/'.$other_tour_category->icon) }}"
                                                  alt="{{ $other_tour_category->name }}" title="{{ $other_tour_category->name }}"
                                                  style="max-height: 25px; margin-right: 15px"
                                             >

@@ -1,5 +1,5 @@
 <div class="nav container-fluid">
-    <div class="mobile-logo"><a href="/"><img src="images/generic_images/logo-lion-white.png" alt="{{ config('app.name') }}"></a></div>
+    <div class="mobile-logo"><a href="/"><img src="{{ asset('images/generic_images/logo-lion-white.png') }}" alt="{{ config('app.name') }}"/></a></div>
     <div class="mobile-menu-open ubuntucondensed"><a href="#"><i class="fa fa-bars"></i><span class="ml-2 word-menu">MENU</span></a></div>
     <nav class="tmt-navbar ubuntucondensed">
         <ul class="center text-uppercase">
@@ -49,8 +49,8 @@
             </li>
             <li id="logo-container">
                 <a href="/">
-                    <img src="images/generic_images/logo-lion.png" class="logo img-responsive" alt="Take Me To Tanzania" title="Take Me To Tanzania Adventure Tours & Safaris">
-                    <img src="images/generic_images/logo-white.png" class="hidden-xs hidden-sm logo-text img-responsive" alt="Take Me To Tanzania">
+                    <img src="{{ asset('images/generic_images/logo-lion.png') }}" class="logo img-responsive" alt="Take Me To Tanzania" title="Take Me To Tanzania Adventure Tours & Safaris"/>
+                    <img src="{{ asset('images/generic_images/logo-white.png') }}" class="hidden-xs hidden-sm logo-text img-responsive" alt="Take Me To Tanzania"/>
                 </a>
             </li>
             <li class="sub-menu">
@@ -90,7 +90,7 @@
             </li>
             <li class="logo-text-grey">
                 <a href="/">
-                    <img src="images/generic_images/logo-text-grey.png" class="logo-text img-responsive" alt="Take Me To Tanzania">
+                    <img src="{{ asset('images/generic_images/logo-text-grey.png')}}" class="logo-text img-responsive" alt="Take Me To Tanzania"/>
                 </a>
             </li>
         </ul>

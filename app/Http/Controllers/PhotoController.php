@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use App\Models\Page;
+use App\Models\TourCategory;
+use App\Models\DestinationCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,7 +14,11 @@ class PhotoController extends Controller
     public function index()
     {
         $title = 'View our differentiated Tanzania Safari Tour Photos';
-        return view('front.photos.gallery',compact('title'));
+        $photos = Photo::all();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+        $destination_categories = DestinationCategory::all();
+        return view('front.photos.gallery', compact('title', 'photos', 'destination_categories', 'pages', 'tour_categories'));
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -19,7 +26,7 @@ class PhotoController extends Controller
     public function all()
     {
         $title = 'Listing all photos';
-        return view('admin.photos.all',compact('title'));
+        return view('admin.photos.all', compact('title'));
     }
 
     public function add()

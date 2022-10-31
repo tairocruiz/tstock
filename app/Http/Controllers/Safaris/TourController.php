@@ -22,7 +22,7 @@ class TourController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('tour_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('tour_access'), Response::HTTP_FORBIDDEN, 'Sorry, You\'r not permitted!');
 
         $title = 'Tanzania Safaris & Tours';
         $tours = Tour::all();
