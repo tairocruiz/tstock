@@ -43,9 +43,9 @@
                     <input type="file" id="photo" name="photo" class="form-control">
                 </div>
                 <div class="row mt-4">
-                @if($tour->categories->count())
+                @if($tour->tour_category->count())
                     <div class="col-md-12"><label for="categories">Related Tour Categories</label></div>
-                    @foreach($tour->categories as $category)
+                    @foreach($tour->tour_category as $category)
                         <div class="col-md-4">
                             <label>
                                 <input type="checkbox" name="tour_categories[]" value="{{ $category->id }}" checked> {{ $category->name }}
@@ -53,11 +53,11 @@
                         </div>
                     @endforeach
                 @endif
-                @if($tour_categories->count() > $tour->categories->count())
+                @if($tour_categories->count() > $tour->tour_category->count())
                     @foreach($tour_categories->where('id','!=',$category->id) as $tour_category)
                         <div class="col-md-4">
                             <label>
-                                <input type="checkbox" name="added_categories[]" value="{{ $tour_category->id }}"> {{ $tour_category->name }}
+$tour->categories                                <input type="checkbox" name="added_categories[]" value="{{ $tour_category->id }}"> {{ $tour_category->name }}
                             </label>
                         </div>
                     @endforeach

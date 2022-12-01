@@ -6,8 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('DestinationController@update',$destination->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ action('App\Http\Controllers\Safaris\DestinationController@update',$destination->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="form-group col-md-8">
                         <label for="name">Edit Destination Name</label>
@@ -16,8 +16,8 @@
                     <div class="form-group col-md-4">
                         <label for="category">Destination Category</label>
                         <select name="category" id="category" class="form-control" required>
-                            <option value="{{ $destination->category->id }}" selected>{{ $destination->category->name }}</option>
-                            @foreach($destination_categories->where('id','!=',$destination->category->id) as $category)
+                            <option value="{{ $destination->destination_category->id }}" selected>{{ $destination->destination_category->name }}</option>
+                            @foreach($destination_categories->where('id','!=',$destination->destination_category->id) as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
@@ -42,7 +42,7 @@
                             <input type="file" id="photo" name="photo" class="form-control">
                         </div>
                     </div>
-                    <input type="hidden" name="_method" value="PUT">
+                    @method('PUT')
                     <div class="col-md-8">
                         <div class="form-group pt-3">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-2"></i>Save Changes</button>
@@ -52,9 +52,9 @@
                     </div>
                 </div>
             </form>
-            <form id="remove-destination-form" action="{{ action('DestinationController@remove',$destination->id) }}" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" name="_method" value="DELETE">
+            <form id="remove-destination-form" action="{{ action('App\Http\Controllers\Safaris\DestinationController@destroy',$destination->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
             </form>
         </div>
         <div class="col-md-3">

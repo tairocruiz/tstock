@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PageController@update',$page->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action([App\Http\Controllers\Safaris\PageController::class, 'update'], $page->id) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Edit Page Description</label> <small class="description-character-counter pull-right"><span class="char-counter">0</span> characters total</small>
-                    <textarea name="description" id="description" class="form-control textarea" cols="30" rows="10">{{ $page->description }}</textarea>
+                    <textarea name="description" id="description" class="form-control ckeditor" cols="30" rows="10">{{ $page->description }}</textarea>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </form>
-            <form action="{{ action('PageController@remove',$page->id) }}" id="remove-page-form" method="POST">
+            <form action="{{ action('App\Http\Controllers\Safaris\PageController@destroy',$page->id) }}" id="remove-page-form" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="DELETE">
             </form>

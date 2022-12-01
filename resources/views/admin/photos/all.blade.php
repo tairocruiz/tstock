@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/photos/add" class="btn btn-success pull-right">Add New Photo</a>
+                <a href="{{ route('admin.photos.create') }}" class="btn btn-success pull-right">Add New Photo</a>
             </h3>
             <hr>
             @if($photos->count())

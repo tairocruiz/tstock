@@ -16,6 +16,7 @@
     <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    {{-- <script src="https://cdn.ckeditor.com/4.20.0/standard-all/ckeditor.js"></script> --}}
 </head>
 <body>
 <div id="app">
@@ -64,7 +65,7 @@
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
+                                        @csrf
                                     </form>
                                 </li>
                             </ul>

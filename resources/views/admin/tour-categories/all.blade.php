@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/tour-categories/add" class="btn btn-success pull-right">Add New Category</a>
+                <a href="{{ route('admin.tour-categories.create') }}" class="btn btn-success pull-right">Add New Category</a>
             </h3>
             <hr>
             @if($tour_categories->count())
@@ -26,7 +26,7 @@
                             <td>{{ $category->seo_title }}</td>
                             <td>@if($category->icon) <img src="images/tour_category_icons/{{ $category->icon }}" alt="Icon" style="max-width: 30px"> @endif</td>
                             <td class="text-center">{{ $category->tours->count() ? $category->tours->count() : '' }}</td>
-                            <td class="w-5 text-center"><a href="/admin/tour-categories/{{ $category->id }}/edit"><i class="fa fa-edit"></i></a></td>
+                            <td class="w-5 text-center"><a href="{{ route('admin.tour-categories.edit', $category->id) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                 </table>

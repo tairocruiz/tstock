@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="header_top_overlay"></div>
         <div class="col-md-12 p-0 header_img_container">
-            <img src="images/destination_images/{{ $destination->photo }}" class="img-responsive" alt="{{ $destination->name }}">
+            <img src="{{ asset('images/destination_images/'.$destination->photo) }}" class="img-responsive" alt="{{ $destination->id }}">
         </div>
     </div>
     <div class="container main">

@@ -31,7 +31,7 @@
                             <div class="mt-2" style="list-style-position: inside">
                                 <div class="assistant-light">This Safari Tour Categories;</div>
                                 <ul>
-                                    @foreach($tour->categories as $other_tour_category)
+                                    @foreach($tour->tour_category as $other_tour_category)
                                         <li>{{ $other_tour_category->name }}</li>
                                     @endforeach
                                 </ul>

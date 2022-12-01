@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Safaris;
 
 use App\Models\Destination;
+use App\Models\DestinationCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
@@ -22,18 +23,24 @@ class DestinationController extends Controller
         return view('front.destinations.show', compact('destination','title'));
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-
-    public function add()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         $title = 'Add New Destination';
-        return view('admin.destinations.add',compact('title'));
+        $destination_categories = DestinationCategory::all();
+        $destinations = Destination::all();
+        return view('admin.destinations.add',compact('title', 'destination_categories', 'destinations'));
     }
 
-    public function all()
+    public function index()
     {
         $title = 'Listing all Destinations';
-        return view('admin.destinations.all',compact('title'));
+        $destinations = Destination::all();
+        return view('admin.destinations.all',compact('title', 'destinations'));
     }
 
     public function store(Request $request)
@@ -44,36 +51,55 @@ class DestinationController extends Controller
             'meta_description' => 'nullable|string|max:160',
             'description' => 'required|string',
             'category' => 'required|numeric',
-            'photo' => 'required|image|max:1000',
+            'photo' => 'required|image',
         ]);
 
         $destination = new Destination;
 
         $destination->name = $request->name;
+        $destination->slug = str_replace(' ', '_', strtolower($request->name));//strtolower($request->name)
         $destination->destination_category_id = $request->category;
         $destination->seo_title = $request->seo_title;
         $destination->meta_description = $request->meta_description;
         $destination->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/destination_images');
-            $path = explode('/',$path);
-            $imageName = $path[2];
-            $destination->photo = $imageName;
-        }
+        // if (!empty($request->photo)) {
+        //     $path = $request->file('photo')->store('/public/destination_images/');
+        //     $path = explode('/',$path);
+        //     $imageName = $path[2];
+        //     $destination->photo = $imageName;
+        // }
+        $this->WekaPicha($request, 'destination_images', 'photo');
+        $request->photo = $this->image;
+        $destination->photo = $request->photo;
 
         $destination->save();
 
         return redirect('/admin/places/')->with('success', $destination->name.' have been successfully added as a new Destination');
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $destination = Destination::findOrFail($id);
         $title = 'Edit '.$destination->name.' details';
-        return view('admin.destinations.edit',compact('destination','title'));
+        $destination_categories = DestinationCategory::all();
+        $destinations = Destination::all();
+        return view('admin.destinations.edit', compact('destination','title', 'destination_categories', 'destinations'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -82,7 +108,7 @@ class DestinationController extends Controller
             'meta_description' => 'nullable|string|max:160',
             'description' => 'required|string',
             'category' => 'required|numeric',
-            'photo' => 'image|max:1000',
+            'photo' => 'image',
         ]);
 
         $destination = Destination::findOrFail($id);
@@ -93,14 +119,17 @@ class DestinationController extends Controller
         $destination->meta_description = $request->meta_description;
         $destination->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            if (!is_null($destination->photo)) {
-                Storage::delete('/public/destination_images/'.$destination->photo);
+
+        if(!empty($request->photo)){
+            if (!empty($destination->photo)){
+                if( file_exists ( public_path('images/destination_images/'.$destination->photo) ) ){
+                    unlink ( public_path('images/destination_images/'.$destination->photo) );
+                }
             }
-            $path = $request->file('photo')->store('/public/destination_images');
-            $path = explode('/',$path);
-            $imageName = $path[2];
-            $destination->photo = $imageName;
+
+            $this->WekaPicha($request, 'destination_images');
+            $request->photo = $this->image;
+            $destination->photo = $request->photo;
         }
 
         $destination->save();
@@ -108,11 +137,17 @@ class DestinationController extends Controller
         return redirect('/admin/places/')->with('success', $destination->name.' have been successfully updated');
     }
 
-    public function remove($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $destination = Destination::findOrFail($id);
         if (!is_null($destination->photo)) {
-            Storage::delete('/public/destination_images/'.$destination->photo);
+            unlink ( public_path('images/destination_images/'.$destination->photo) );
         }
         $destination->delete();
 

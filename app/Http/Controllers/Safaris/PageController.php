@@ -12,6 +12,13 @@ use App\Http\Controllers\Controller;
 
 class PageController extends Controller
 {
+
+    public function index()
+    {
+        $title = 'Listing all Pages';
+        $pages = Page::all();
+        return view('admin.pages.all', compact('title', 'pages'));
+    }
     public function home()
     {
         $title = 'Tanzania Safari Tours - Take Me To Tanzania Adventure Safaris';
@@ -68,10 +75,11 @@ class PageController extends Controller
         return view('admin.pages.all', compact('title'));
     }
 
-    public function add()
+    public function create()
     {
         $title = 'Add a new Page';
-        return view('admin.pages.add', compact('title'));
+        $pages = Page::all();
+        return view('admin.pages.add', compact('title', 'pages'));
     }
 
     public function store(Request $request)
@@ -81,23 +89,21 @@ class PageController extends Controller
             'seo_title' => 'nullable|string|max:65',
             'meta_description' => 'nullable|string|max:160',
             'description' => 'required',
-            'photo' => 'required|image|min:100|max:500',
+            'photo' => 'required|image',
         ]);
 
         $page = new Page;
 
         $page->name = $request->name;
+        $page->slug = str_replace(' ', '-', strtolower($request->name));
         $page->seo_title = $request->seo_title;
         $page->meta_description = $request->meta_description;
         $page->description = $request->description;
         $page->resource = $request->resource == null ? 0 : 1;
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/page_images');
-            $path = explode('/',$path);
-            $fileName = $path[2];
-            $page->photo = $fileName;
-        }
+        $this->WekaPicha($request, 'page_images', 'photo');
+        $request->photo = $this->image;
+        $page->photo = $request->photo;
 
         $page->save();
 
@@ -108,8 +114,9 @@ class PageController extends Controller
     {
         $page = Page::findOrFail($id);
         $title = 'Edit '.$page->name.' details';
+        $pages = Page::all();
 
-        return view('admin.pages.edit',compact('page','title'));
+        return view('admin.pages.edit',compact('page','title', 'pages'));
     }
 
     public function update(Request $request, $id)
@@ -130,14 +137,16 @@ class PageController extends Controller
         $page->description = $request->description;
         $page->resource = $request->resource == null ? 0 : 1;
 
-        if ($request->hasFile('photo')) {
-            if (!is_null($page->photo)) {
-                Storage::delete('/public/page_images/'.$page->photo);
+        if(!empty($request->photo)){
+            if (!empty($page->photo)){
+                if( file_exists ( public_path('images/page_images/'.$page->photo) ) ){
+                    unlink ( public_path('images/page_images/'.$page->photo) );
+                }
             }
-            $path = $request->file('photo')->store('/public/page_images');
-            $path = explode('/',$path);
-            $fileName = $path[2];
-            $page->photo = $fileName;
+
+            $this->WekaPicha($request, 'page_images', 'photo');
+            $request->photo = $this->image;
+            $page->photo = $request->photo;
         }
 
         $page->save();
@@ -145,11 +154,11 @@ class PageController extends Controller
         return redirect('/admin/pages')->with('success', $page->name.' have been successfully updated');
     }
 
-    public function remove($id)
+    public function destroy($id)
     {
         $page = Page::findOrFail($id);
         if (!is_null($page->photo)) {
-            Storage::delete('/public/page_images/'.$page->photo);
+            unlink ( public_path('images/page_images/'.$page->photo) );
         }
 
         $page->delete();

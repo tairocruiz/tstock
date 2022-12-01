@@ -75,6 +75,14 @@ $(function () {
 
     countingCharacters();
 
+    // photos
+    $('#remove-photo-btn').on('click', function () {
+        var photoName = $('input#name').val();
+        if (confirm('Are you sure you want to delete ' + photoName + ' from list of photos? The process is irreversible, you can\'t undo!')) {
+            $('#remove-photo-form').submit();
+        }
+    });
+
     //-----------------------------------------------------------------------------------------------------------------
 
     // remove destination if confirmed

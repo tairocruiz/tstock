@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\Safaris\PageController As AfarisPageController;
     use App\Http\Controllers\Safaris\HomeController As AfarisHomeController;
     use App\Http\Controllers\Safaris\DestinationController As AfarisDestinationController;
+    use App\Http\Controllers\Safaris\PostController As AfarisPostController;
+    use App\Http\Controllers\Safaris\PostCategoryController As AfarisPostCategoryController;
+    use App\Http\Controllers\Safaris\PhotoController As AfarisPhotoController;
 //======= Guest Controllers ================================================================.
     use App\Http\Controllers\PostCategoryController;
     use App\Http\Controllers\DestinationController;
@@ -127,12 +130,13 @@ Auth::routes();
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resources([
         'places' => AfarisDestinationController::class,
-        'destination_categories' => AfarisDestinationCategoryController::class,
-        'post_categories' => PostCategoryController::class,
-        'posts' => PostController::class,
+        'destination-categories' => AfarisDestinationCategoryController::class,
+        'post-categories' => AfarisPostCategoryController::class,
+        'posts' => AfarisPostController::class,
         'pages' => AfarisPageController::class,
         'tours' => AfarisTourController::class,
-        'tour_categories' => AfarisTourCategoryController::class,
+        'tour-categories' => AfarisTourCategoryController::class,
+        'photos' => AfarisPhotoController::class,
     ]);
 });
 

@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PageController@store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('App\Http\Controllers\Safaris\PageController@store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="form-group col-md-9">

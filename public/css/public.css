@@ -1388,12 +1388,22 @@ img {
     -webkit-columns: 2;
             columns: 2;
   }
+  .day-count {
+    font-size: 10px;
+    width: 8% !important;
+    height: 7vw !important;
+  }
 }
 
 @media only screen and (max-width: 480px) {
   .gallery-pics-container {
     -webkit-columns: 1;
             columns: 1;
+  }
+  .day-count {
+    font-size: 10px;
+    width: 8% !important;
+    height: 7vw !important;
   }
 }
 
@@ -1456,7 +1466,11 @@ img {
   display: block;
   border-radius: 50%;
   -webkit-animation: flash-icons 1s infinite normal;
+  -webkit-animation-delay: 1s;
+  -webkit-animation-duration: 2s;
           animation: flash-icons 1s infinite normal;
+          animation-delay: 1s;
+          animation-duration: 2s;
 }
 
 @-webkit-keyframes flash-icons {

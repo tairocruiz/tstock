@@ -6,8 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PhotoController@update',$photo->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ action('App\Http\Controllers\Safaris\PhotoController@update',$photo->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="form-group">
                     <label for="name">Edit Photo Name</label>
                     <input type="text" id="name" name="name" class="form-control" maxlength="30" value="{{ $photo->name }}" required>
@@ -23,19 +23,21 @@
                             <input type="file" id="photo" name="photo" class="form-control">
                         </div>
                     </div>
-                    <input type="hidden" name="_method" value="PUT">
+                    @method('PUT')
                     <div class="col-md-7">
                         <div class="form-group pt-3">
                             <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-check mr-2"></i>Save Changes</button>
                             <a href="/admin/photos" class="btn btn-default"><i class="fa fa-times mr-2"></i>Cancel</a>
-                            <a href="#" id="remove-photo-btn" class="btn btn-danger pull-right mt-1" title="Remove this photo"><i class="fa fa-trash-o mr-2"></i>Remove</a>
+                            {{-- <a href="#" id="remove-photo-btn" class="btn btn-danger pull-right mt-1" title="Remove this photo"><i class="fa fa-trash-o mr-2"></i>Remove</a> --}}
+                            <a id="remove-photo-btn" class="btn btn-danger pull-right" title="Remove {{ $photo->name }}"><i class="fa fa-trash-o mr-2"></i>Remove</a>
+                            {{-- <button id="remove-photo-btn" type="reset" class="btn btn-danger pull-right" title="Remove {{ $photo->name }}"><i class="fa fa-trash-o mr-2"></i>Remove</button> --}}
                         </div>
                     </div>
                 </div>
             </form>
-            <form id="remove-photo-form" action="{{ action('PhotoController@remove',$photo->id) }}" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" name="_method" value="DELETE">
+            <form id="remove-photo-form" action="{{ action('App\Http\Controllers\Safaris\PhotoController@destroy',$photo->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
             </form>
         </div>
         <div class="col-md-3">

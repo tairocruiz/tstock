@@ -1,4 +1,3 @@
-ho
 @extends('layouts.front')
 
 @section('content')
@@ -15,7 +14,7 @@ ho
                     <div class="col-md-8">
                         <h2 class="assistant-light mb-3">
                             Overview
-{{--                            @foreach($tour->categories as $the_category)--}}
+{{--                            @foreach($tour->tour_category as $the_category)--}}
 {{--                                @if($the_category->icon)--}}
 {{--                                    <span>--}}
 {{--                                        <img src="{{ asset('images/tour_category_icons/{{ $the_category->icon }}"--}}
@@ -27,9 +26,9 @@ ho
 {{--                                @endif--}}
 {{--                            @endforeach--}}
                         </h2>
-                        @if($tour->categories)
+                        @if($tour->tour_category)
                             <ul class="categories-list list-inline mb-3 assistant-light">
-                                @foreach($tour->categories as $tour_category)
+                                @foreach($tour->tour_category as $tour_category)
                                     <li class="category-list-item">
 {{--                                        @if($tour_category->icon)--}}
 {{--                                            <img src="{{ asset('images/tour_category_icons/{{ $tour_category->icon }}"--}}
@@ -72,7 +71,7 @@ ho
                 <div class="mb-3 text-justify">
                     <h3 class="text-uppercase text-muted ubuntucondensed mb-3">
                         Customizable Itinerary
-                        @foreach($tour->categories as $the_category)
+                        @foreach($tour->tour_category as $the_category)
                             @if($the_category->icon)
                                 <span class="pull-right">
                                     <img src="{{ asset('images/tour_category_icons/'.$the_category->icon ) }}"
@@ -179,7 +178,7 @@ ho
                                 </div>
                                 <div class="mt-1">
                                     <i class="fa fa-fw fa-folder-open-o mr-1"></i>
-                                    @foreach($other_tour->categories as $other_tour_category)
+                                    @foreach($other_tour->tour_category as $other_tour_category)
                                         @if($other_tour_category->icon)
                                             <img src="{{ asset('images/tour_category_icons/'.$other_tour_category->icon) }}"
                                                  alt="{{ $other_tour_category->name }}" title="{{ $other_tour_category->name }}"

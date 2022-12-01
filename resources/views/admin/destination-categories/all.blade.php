@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/destination-categories/add" class="btn btn-success pull-right">Add New Destination Category</a>
+                <a href="{{ route('admin.destination-categories.create') }}" class="btn btn-success pull-right">Add New Destination Category</a>
             </h3>
             <hr>
             @if($destination_categories->count())

@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PostController@store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('App\Http\Controllers\Safaris\PostController@store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Enter Blog Post Title</label>
@@ -67,7 +67,7 @@
                         <tr>
                             <td>{{ $post->title }}</td>
                             <td class="w-5 text-center">
-                                <a href="/admin/posts/{{ $post->id }}/edit" title="Edit {{ $post->title }} details"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('admin.posts.edit', $post->id) }}" title="Edit {{ $post->title }} details"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

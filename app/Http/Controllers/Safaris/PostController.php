@@ -7,6 +7,7 @@ use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Models\TourCategory;
 
 class PostController extends Controller
 {
@@ -21,16 +22,19 @@ class PostController extends Controller
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function all()
+    public function index()
     {
         $title = 'Listing all Posts';
-        return view('admin.posts.all',compact('title'));
+        $posts = Post::all();
+        return view('admin.posts.all',compact('title', 'posts'));
     }
 
-    public function add()
+    public function create()
     {
         $title = 'Add a new Blog Post';
-        return view('admin.posts.add',compact('title'));
+        $post_categories = PostCategory::all();
+        $posts = Post::all();
+        return view('admin.posts.add',compact('title', 'post_categories', 'posts'));
     }
 
     public function store(Request $request)
@@ -40,23 +44,21 @@ class PostController extends Controller
             'seo_title' => 'nullable|string|max:65',
             'meta_description' => 'nullable|string|max:160',
             'description' => 'required|string',
-            'photo' => 'required|image|max:500',
+            'photo' => 'required|image',
             'categories' => 'required|array',
         ]);
 
         $post = new Post;
 
         $post->title = $request->name;
+        $post->slug = str_replace(' ', '-', strtolower($request->name));
         $post->seo_title = $request->seo_title;
         $post->meta_description = $request->meta_description;
         $post->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/post_images');
-            $path = explode('/',$path);
-            $filename = $path[2];
-            $post->photo = $filename;
-        }
+        $this->WekaPicha($request, 'post_images', 'photo');
+        $request->photo = $this->image;
+        $post->photo = $request->photo;
 
         if (!is_null($request->categories)) { $categories = $request->categories; }
 
@@ -71,7 +73,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $title = 'Edit '.$post->title.' details';
-        return view('admin.posts.edit',compact('post','title'));
+        $post_categories = TourCategory::all();
+        $posts = Post::all();
+        return view('admin.posts.edit',compact('post','title', 'post_categories', 'posts'));
     }
 
     public function update(Request $request, $id)
@@ -93,11 +97,16 @@ class PostController extends Controller
         $post->meta_description = $request->meta_description;
         $post->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/post_images');
-            $path = explode('/',$path);
-            $filename = $path[2];
-            $post->photo = $filename;
+        if(!empty($request->photo)){
+            if (!empty($post->photo)){
+                if( file_exists ( public_path('images/post_images/'.$post->photo) ) ){
+                    unlink ( public_path('images/post_images/'.$post->photo) );
+                }
+            }
+
+            $this->WekaPicha($request, 'post_images', 'photo');
+            $request->photo = $this->image;
+            $post->photo = $request->photo;
         }
 
         if (!is_null($request->existing_categories) && !is_null($request->added_categories)) {
@@ -123,11 +132,11 @@ class PostController extends Controller
         return redirect('/admin/posts')->with('success', 'New blog post have been successfully updated');
     }
 
-    public function remove($id)
+    public function destroy($id)
     {
         $post = Post::findOrFail($id);
         if (!is_null($post->photo)) {
-            Storage::delete('/public/post_images/'.$post->photo);
+            unlink ( public_path('images/post_images/'.$post->photo) );
         }
         $post->delete();
 

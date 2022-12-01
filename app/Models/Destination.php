@@ -25,6 +25,6 @@ class Destination extends Model
 
     public function destination_category()
     {
-        return $this->belongsTo('App\Models\DestinationCategory','destination_category_id');
+        return $this->belongsTo(DestinationCategory::class);
     }
 }

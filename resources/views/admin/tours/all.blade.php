@@ -32,7 +32,7 @@
                                     <a href="/admin/tours/{{ $tour->id }}/{{ $tour->featured = 1 }}" title="Make This Tour Featured"><i class="fa fa-times text-danger"></i></a>
                                 @endif
                             </td>
-                            <td class="w-10 text-center">{{ $tour->categories->count() }}</td>
+                            <td class="w-10 text-center">{{ $tour->tour_category->count() }}</td>
                             <td class="w-5 text-center"><a href="/admin/tours/{{ $tour->id }}/edit"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach

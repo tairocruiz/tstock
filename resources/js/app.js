@@ -1,1 +1,32 @@
-import './bootstrap';
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
+ require('./bootstrap');
+ window.Vue = require('vue');
+
+ import Vue from 'vue';
+ import CKEditor from '@ckeditor/ckeditor5-vue2';
+ import VueToast from 'vue-toast-notification';
+ import 'vue-toast-notification/dist/theme-sugar.css';
+
+ Vue.use(VueToast, {position: 'bottom'});
+ Vue.use(CKEditor);
+
+ /**
+  * Next, we will create a fresh Vue application instance and attach it to
+  * the page. Then, you may begin adding components to this application
+  * or customize the JavaScript scaffolding to fit your unique needs.
+  */
+
+ // Vue.component('example', require('./components/Example.vue'));
+ Vue.component('tours', require('./components/Tours.vue'));
+
+ Vue.component('inquiry-form', require('./components/frontend/TourInquiry'));
+ Vue.component('tailor-made-safari', require('./components/frontend/TailorMadeSafari'));
+
+ const app = new Vue({
+     el: '#app'
+ });

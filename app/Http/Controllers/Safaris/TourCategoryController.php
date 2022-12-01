@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Safaris;
 
 use App\Http\Resources\TourCategoryResource;
 use App\Models\TourCategory;
+use App\Models\Destinationcategory;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
@@ -14,7 +16,10 @@ class TourCategoryController extends Controller
     public function index()
     {
         $title = 'Tanzania Safaris and Tours';
-        return view('front.tour-categories.index', compact('title'));
+        $tour_categories = TourCategory::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        return view('admin.tour-categories.all', compact('title', 'tour_categories', 'pages', 'destination_categories'));
     }
 
     public function show($slug)
@@ -38,10 +43,11 @@ class TourCategoryController extends Controller
         return TourCategoryResource::collection($tour_categories);
     }
 
-    public function add()
+    public function create()
     {
         $title = 'Add a new Tour Category';
-        return view('admin.tour-categories.add',compact('title'));
+        $tour_categories = TourCategory::all();
+        return view('admin.tour-categories.add',compact('title', 'tour_categories'));
     }
 
     public function store(Request $request)
@@ -51,29 +57,26 @@ class TourCategoryController extends Controller
             'seo_title' => 'nullable|string|max:65',
             'meta_description' => 'nullable|string|max:160',
             'description' => 'nullable|string',
-            'photo' => 'required|image|min:200|max:600',
+            'photo' => 'required|image',
             'icon' => 'nullable|image|max:300',
         ]);
 
         $category = new TourCategory;
 
         $category->name = $request->name;
+        $category->slug = str_replace(' ', '-', strtolower($request->name));
         $category->special = $request->special !== null ? 1 : 0;
         $category->seo_title = $request->seo_title;
         $category->meta_description = $request->meta_description;
         $category->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/tour_category_images');
-            $path = explode('/',$path); $fileName = $path[2];
-            $category->photo = $fileName;
-        }
+        $this->WekaPicha($request, 'tour_category_images', 'photo');
+        $request->photo = $this->image;
+        $category->photo = $request->photo;
 
-        if ($request->hasFile('icon')) {
-            $path = $request->file('icon')->store('/public/tour_category_icons');
-            $path = explode('/',$path); $iconName = $path[2];
-            $category->icon = $iconName;
-        }
+        $this->WekaPicha($request, 'tour_category_icons', 'icon');
+        $request->icon = $this->icon;
+        $category->icon = $request->icon;
 
         $category->save();
 
@@ -84,7 +87,8 @@ class TourCategoryController extends Controller
     {
         $category = TourCategory::findOrFail($id);
         $title = 'Edit '.$category->name.' details';
-        return view('admin.tour-categories.edit',compact('category','title'));
+        $tour_categories = TourCategory::all();
+        return view('admin.tour-categories.edit',compact('category','title', 'tour_categories'));
     }
 
     public function update(Request $request, $id)
@@ -95,7 +99,7 @@ class TourCategoryController extends Controller
             'meta_description' => 'nullable|string|max:160',
             'description' => 'nullable|string',
             'photo' => 'nullable|image|min:200|max:600',
-            'icon' => 'nullable|image|max:300',
+            'icon' => 'nullable|image',
         ]);
 
         $category = TourCategory::findOrFail($id);
@@ -106,23 +110,28 @@ class TourCategoryController extends Controller
         $category->meta_description = $request->meta_description;
         $category->description = $request->description;
 
-        if ($request->hasFile('photo')) {
-            if (!is_null($category->photo)) {
-                Storage::delete('/public/tour_category_photos/'.$category->photo);
+        if(!empty($request->photo)){
+            if (!empty($category->photo)){
+                if( file_exists ( public_path('images/tour_category_images/'.$category->photo) ) ){
+                    unlink ( public_path('images/tour_category_images/'.$category->photo) );
+                }
             }
-            $path = $request->file('photo')->store('/public/tour_category_images');
-            $path = explode('/',$path);
-            $fileName = $path[2];
-            $category->photo = $fileName;
+
+            $this->WekaPicha($request, 'tour_category_images', 'photo');
+            $request->photo = $this->image;
+            $category->photo = $request->photo;
         }
 
-        if ($request->hasFile('icon')) {
-            if (!is_null($category->icon)) {
-                Storage::delete('/public/tour_category_icons/'.$category->icon);
+        if(!empty($request->icon)){
+            if (!empty($category->icon)){
+                if( file_exists ( public_path('images/tour_category_icons/'.$category->icon) ) ){
+                    unlink ( public_path('images/tour_category_icons/'.$category->icon) );
+                }
             }
-            $path = $request->file('icon')->store('/public/tour_category_icons');
-            $path = explode('/',$path); $iconName = $path[2];
-            $category->icon = $iconName;
+
+            $this->WekaPicha($request, 'tour_category_icons', 'icon');
+            $request->icon = $this->icon;
+            $category->icon = $request->icon;
         }
 
         $category->save();
@@ -130,9 +139,15 @@ class TourCategoryController extends Controller
         return redirect('/admin/tour-categories')->with('success',$category->name.' have been successfully updated');
     }
 
-    public function remove($id)
+    public function destroy($id)
     {
         $category = TourCategory::findOrFail($id);
+        if (!is_null($category->photo)) {
+            unlink ( public_path('images/tour_category_images/'.$category->photo) );
+        }
+        if (!is_null($category->icon)) {
+            unlink ( public_path('images/tour_category_icons/'.$category->icon) );
+        }
 
         if ($category->tours->count()) {
             return back()->with('error', $category->name.' category have '.$category->tours->count().' tour package(s) attached, please move those package(s) to other tour category / categories to proceed ');

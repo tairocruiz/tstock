@@ -15,7 +15,10 @@ class TourCategoryController extends Controller
     public function index()
     {
         $title = 'Tanzania Safaris and Tours';
-        return view('front.tour-categories.index', compact('title'));
+        $tour_categories = TourCategory::all();
+        $pages = Page::all();
+        $destination_categories = DestinationCategory::all();
+        return view('front.tour-categories.index', compact('title', 'tour_categories', 'pages', 'destination_categories'));
     }
 
     public function show($slug)

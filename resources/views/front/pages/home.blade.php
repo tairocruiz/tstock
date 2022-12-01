@@ -155,7 +155,7 @@
                                 </h4>
                                 <div class="mb-2">
 {{--                                    <i class="fa fa-fw fa-folder-open-o mr-1"></i>--}}
-                                    @foreach($featured_tour->categories as $other_tour_category)
+                                    @foreach($featured_tour->tour_category as $other_tour_category)
                                         @if($other_tour_category->icon)
                                             <img src="{{ asset('images/tour_category_icons/'.$other_tour_category->icon) }}"
                                                  alt="{{ $other_tour_category->name }}" title="{{ $other_tour_category->name }}"

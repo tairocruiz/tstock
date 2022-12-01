@@ -29,10 +29,10 @@ class Tour extends Model
         return $this->belongsToMany(TourCategory::class);
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany('App\Models\TourCategory');
-    }
+    // public function categories()
+    // {
+    //     return $this->belongsToMany('App\Models\TourCategory');
+    // }
 
     public function tour_days()
     {

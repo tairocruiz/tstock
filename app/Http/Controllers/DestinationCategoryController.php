@@ -14,7 +14,10 @@ class DestinationCategoryController extends Controller
     public function index()
     {
         $title = 'Tanzania Best Places To Go - Tanzania Destinations';
-        return view('front.destination-categories.index', compact('title'));
+        $destination_categories = DestinationCategory::all();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+        return view('front.destination-categories.index', compact('title', 'destination_categories', 'pages', 'tour_categories'));
     }
 
     public function all4api()

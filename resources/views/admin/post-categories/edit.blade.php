@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PostCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('App\Http\Controllers\Safaris\PostCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Edit Category Name</label>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <input type="hidden" name="_method" value="PUT">
+                        @method('PUT')
                         <div class="form-group pt-3">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-check mr-2"></i>Save Changes</button>
                             <a href="/admin/post-categories" class="btn btn-default"><i class="fa fa-times mr-2"></i>Cancel</a>
@@ -41,9 +41,9 @@
                     </div>
                 </div>
             </form>
-            <form action="{{ action('PostCategoryController@remove',$category->id) }}" id="remove-post-category-form" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" name="_method" value="DELETE">
+            <form action="{{ action('App\Http\Controllers\Safaris\PostCategoryController@destroy',$category->id) }}" id="remove-post-category-form" method="POST">
+                @csrf
+                @method('DELETE')
             </form>
         </div>
         <div class="col-md-3">

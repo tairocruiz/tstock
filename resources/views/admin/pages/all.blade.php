@@ -6,7 +6,7 @@
         <div class="col-md-9">
             <h3 class="text-center">
                 {{ $title }}
-                <a href="/admin/pages/add" class="btn btn-success pull-right">Add New Page</a>
+                <a href="{{ route('admin.pages.create') }}" class="btn btn-success pull-right">Add New Page</a>
             </h3>
             <hr>
             @if($pages->count())
@@ -20,7 +20,7 @@
                         <tr>
                             <td>{{ $page->name }}</td>
                             <td class="text-center">@if($page->resource) <i class="fa fa-check text-success"></i> @endif</td>
-                            <td class="w-5 text-center"><a href="/admin/pages/{{ $page->id }}/edit"><i class="fa fa-edit"></i></a></td>
+                            <td class="w-5 text-center"><a href="{{ route('admin.pages.edit', $page->id) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                 </table>

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Safaris;
 
 use App\Models\Photo;
+use App\Models\Page;
+use App\Models\TourCategory;
+use App\Models\DestinationCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
@@ -12,21 +15,18 @@ class PhotoController extends Controller
     public function index()
     {
         $title = 'View our differentiated Tanzania Safari Tour Photos';
-        return view('front.photos.gallery',compact('title'));
+        $photos = Photo::all();
+        $pages = Page::all();
+        $tour_categories = TourCategory::all();
+        $destination_categories = DestinationCategory::all();
+        return view('admin.photos.all', compact('title', 'photos', 'pages', 'tour_categories', 'destination_categories'));
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-
-    public function all()
-    {
-        $title = 'Listing all photos';
-        return view('admin.photos.all',compact('title'));
-    }
-
-    public function add()
+    public function create()
     {
         $title = 'Add a new photo';
-        return view('admin.photos.add',compact('title'));
+        $photos = Photo::all();
+        return view('admin.photos.add', compact('title', 'photos'));
     }
 
     public function store(Request $request)
@@ -34,19 +34,17 @@ class PhotoController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:30',
             'description' => 'nullable|string|max:170',
-            'photo' => 'required|image|max:500',
+            'photo' => 'required|image',
         ]);
 
         $photo = new Photo();
 
         $photo->name = $request->name;
         $photo->description = $request->description;
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('/public/gallery_photos');
-            $path = explode('/',$path);
-            $filename = $path[2];
-            $photo->photo = $filename;
-        }
+
+        $this->WekaPicha($request, 'gallery_photos', 'photo');
+        $request->photo = $this->image;
+        $photo->photo = $request->photo;
 
         $photo->save();
 
@@ -57,7 +55,8 @@ class PhotoController extends Controller
     {
         $photo = Photo::findOrFail($id);
         $title = 'Edit '.$photo->name.' details';
-        return view('admin.photos.edit',compact('photo','title'));
+        $photos = Photo::all();
+        return view('admin.photos.edit',compact('photo','title', 'photos'));
     }
 
     public function update(Request $request, $id)
@@ -72,14 +71,16 @@ class PhotoController extends Controller
 
         $photo->name = $request->name;
         $photo->description = $request->description;
-        if ($request->hasFile('photo')) {
-            if (!is_null($photo->photo)) {
-                Storage::delete('/public/gallery_photos/'.$photo->photo);
+        if(!empty($request->photo)){
+            if (!empty($photo->photo)){
+                if( file_exists ( public_path('images/gallery_photos/'.$photo->photo) ) ){
+                    unlink ( public_path('images/gallery_photos/'.$photo->photo) );
+                }
             }
-            $path = $request->file('photo')->store('/public/gallery_photos');
-            $path = explode('/',$path);
-            $filename = $path[2];
-            $photo->photo = $filename;
+
+            $this->WekaPicha($request, 'gallery_photos', 'photo');
+            $request->photo = $this->image;
+            $photo->photo = $request->photo;
         }
 
         $photo->save();
@@ -87,11 +88,11 @@ class PhotoController extends Controller
         return redirect('/admin/photos')->with('success', 'New Photo named '.$photo->name.' have been successfully updated');
     }
 
-    public function remove($id)
+    public function destroy($id)
     {
         $photo = Photo::findOrFail($id);
         if (!is_null($photo->photo)) {
-            Storage::delete('/public/gallery_photos/'.$photo->photo);
+            unlink ( public_path('images/gallery_photos/'.$photo->photo) );
         }
         $photo->delete();
 

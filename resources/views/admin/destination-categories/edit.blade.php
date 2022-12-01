@@ -6,8 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('DestinationCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ action('App\Http\Controllers\Safaris\DestinationCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="form-group">
                     <label for="name">Edit Destination Category Name</label>
                     <input type="text" id="name" name="name" class="form-control" value="{{ $category->name }}" required autofocus>
@@ -54,7 +54,7 @@
                         <tr>
                             <td>{{ $category->name }}</td>
                             <td class="w-5 text-center">
-                                <a href="/admin/destination-categories/{{ $category->id }}/edit" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('admin.destination-categories.edit', $category->id) }}" title="Edit {{ $category->name }} details"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

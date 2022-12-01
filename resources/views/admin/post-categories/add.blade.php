@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('PostCategoryController@store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ action('App\Http\Controllers\Safaris\PostCategoryController@store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="name">Enter Category Name</label>

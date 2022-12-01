@@ -26,7 +26,7 @@
                     @method('POST')
                    {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name">Your Fulli Name</label>
+                        <label for="name">Your Full Name</label>
                         <input type="text" name="name" id="name" class="input-lg form-control" placeholder="your full name" required autofocus>
                     </div>
                     <div class="row">
@@ -74,7 +74,7 @@
                         </div>
                         <div class="p-2 mb-3">
                             <span class="assistant-light mr-3">Chosen Tour Categories</span>
-                            @foreach($booked_tour->categories as $other_tour_category)
+                            @foreach($booked_tour->tour_category as $other_tour_category)
                                 @if($other_tour_category->icon)
                                     <img src="images/tour_category_icons/{{ $other_tour_category->icon }}"
                                          alt="{{ $other_tour_category->name }}" title="{{ $other_tour_category->name }}"

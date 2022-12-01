@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+ @extends('layouts.admin')
 
 @section('content')
     <div class="row">
@@ -6,8 +6,8 @@
         <div class="col-md-6">
             <h3 class="text-center">{{ $title }}</h3>
             <hr>
-            <form action="{{ action('TourCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
+            <form action="{{ action('App\Http\Controllers\Safaris\TourCategoryController@update',$category->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label for="name">Edit Category Name</label>
@@ -49,9 +49,9 @@
                     <button id="remove-tour-category-button" type="reset" class="btn btn-danger pull-right" title="Remove {{ $category->name }}"><i class="fa fa-trash-o mr-2"></i>Remove</button>
                 </div>
             </form>
-            <form id="remove-tour-category-form" action="{{ action('TourCategoryController@remove',$category->id) }}" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" name="_method" value="DELETE">
+            <form id="remove-tour-category-form" action="{{ route('admin.tour-categories.destroy', $category->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
             </form>
         </div>
         <div class="col-md-3">

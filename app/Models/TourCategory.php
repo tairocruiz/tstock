@@ -25,6 +25,6 @@ class TourCategory extends Model
 
     public function tours()
     {
-        return $this->belongsToMany('App\Models\Tour');
+        return $this->belongsToMany(Tour::class);
     }
 }

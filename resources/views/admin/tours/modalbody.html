@@ -1,0 +1,154 @@
+<div class="modal-body">
+    <form ref="tour_form" id="tour_form">
+        <div class="row">
+            <div class="form-group col-md-8">
+                <label for="name">Tour Package Name</label>
+                <input type="text" name="name" id="name" v-model="tour.name" class="form-control">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="days_count">Tour Days</label>
+                <input type="number" name="days_count" id="days_count" :value="days.length" readonly class="form-control">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="price">Tour Price</label>
+                <input type="number" name="price" id="price" v-model="tour.price" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-8">
+                <label for="seo_title">SEO Title</label> <small>(optional)</small> <small v-if="tour.seo_title" class="pull-right text-muted">{{ tour.seo_title.length }} characters</small>
+                <input type="text" name="seo_title" v-model="tour.seo_title" maxlength="70" id="seo_title" class="form-control">
+            </div>
+            <div v-if="!tour.map" class="form-group col-md-4">
+                <label for="map">Upload Tour Map</label>
+                <input @change="collectTourMap($event)" type="file" name="map" id="map" class="form-control">
+            </div>
+            <div v-else>
+                <div v-if="tour.map && tour.mapPreview">
+                    <img :src="tour.mapPreview" style="max-height: 50px; max-width: 120px" alt="Preview">
+                    <button class="btn btn-warning ml-3" @click="tour.map = ''">Remove map</button>
+                </div>
+                <div v-else-if="tour.map && !tour.mapPreview">
+                    <img :src="`/storage/tour_maps/${tour.map}`" style="max-height: 50px; max-width: 120px" alt="Preview">
+                    <button class="btn btn-warning ml-3" @click="tour.map = ''">Remove map</button>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="meta_description">Meta Description</label> <small>(optional)</small> <small v-if="tour.meta_description" class="pull-right">{{ tour.meta_description.length }} characters</small>
+                <textarea name="meta_description" v-model="tour.meta_description" id="meta_description" maxlength="160" cols="30" rows="2" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="overview">Tour Overview</label>
+            <textarea name="overview" id="overview" v-model="tour.overview" cols="30" rows="2" class="form-control"></textarea>
+        </div>
+
+        <!--   Tour Categories   -->
+        <div class="row mb-3">
+            <!--   if this is editing & thisTourCategories have entries   -->
+            <div v-if="edit === true && thisTourCategories.length">
+                <div class="col-sm-6 col-md-4" v-for="(thisCategory,i) in thisTourCategories" :key="`B${i}`" v-if="thisCategory.id">
+                    <label>
+                        <input type="checkbox" name="existing_categories[]" :value="thisCategory.id" v-model="thisCategory.id"> {{ thisCategory.name }}
+                    </label>
+                </div>
+                <div class="col-sm-6 col-md-4" v-for="(category,i) in allTourCategories" :key="`C${i}`" v-if="category.id && !thisTourCategoriesIds.includes(category.id)">
+                    <label>
+                        <input type="checkbox" name="added_categories[]" :value="category.id"> {{ category.name }}
+                    </label>
+                </div>
+            </div>
+
+            <!--   else   -->
+            <div v-else>
+                <div class="col-sm-4 col-md-6 col-lg-4" v-for="(category,i) in allTourCategories" :key="`D${i}`">
+                    <label>
+                        <input type="checkbox" name="categories[]" :value="category.id"> {{ category.name }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!--   day 2 day blocks   -->
+        <div class="mb-3">
+            <div class="bg-info mt-3 p-2" v-for="(theday,d) in days" :key="theday.day">
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label for="day_order">Day {{ d+1 }} Order</label>
+                        <input type="number" name="day_order" id="day_order" v-model="days[d].day_order" class="form-control">
+                    </div>
+                    <div class="form-group col-md-10">
+                        <label for="day_title">Day {{ d+1 }} Title</label>
+                        <input type="text" id="day_title" v-model="days[d].day_title" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="day_description">Day {{ d+1 }} Activities Description</label>
+                    <ckeditor :editor="editor" :id="`day_description_${d}`" v-model="days[d].day_description" @focus="removeCKFocusClass(d)" :config="editorConfig"></ckeditor>
+                    <!--  <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>-->
+                </div>
+                <div class="row">
+                    <div>
+                        <div v-if="!days[d].day_photo1" class="form-group col-md-6">
+                            <label for="day_photo1">Day {{ d+1 }} first Photo</label> <span>(800px by 500px)</span>
+                            <input type="file" @change="collectDayPhoto1(d, $event)" name="day_photo1" id="day_photo1" class="form-control">
+                        </div>
+                        <div v-else class="col-md-6">
+                            <div v-if="days[d].day_photo1 && days[d].day_photo1Preview">
+                                <img :src="days[d].day_photo1Preview" style="max-height: 70px; max-width: 120px" alt="Preview">
+                                <button class="btn btn-warning ml-3" @click.prevent="days[d].day_photo1 = ''">Remove Day {{d+1}} photo #1</button>
+                            </div>
+                            <div v-else-if="days[d].day_photo1 && !days[d].day_photo1Preview">
+                                <img :src="`/storage/day2day_photos/${days[d].day_photo1}`" style="max-height: 70px; max-width: 120px" alt="Preview">
+                                <button class="btn btn-warning ml-3" @click.prevent="days[d].day_photo1 = ''">Remove Day {{d+1}} photo #1</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div v-if="!days[d].day_photo2" class="form-group col-md-6">
+                            <label for="day_photo2">Day {{ d+1 }} second Photo</label> <span>(800px by 500px)</span>
+                            <input type="file" @change="collectDayPhoto2(d, $event)" name="day_photo2" id="day_photo2" class="form-control">
+                        </div>
+                        <div v-else class="col-md-6">
+                            <div v-if="days[d].day_photo2 && days[d].day_photo2Preview">
+                                <img :src="days[d].day_photo2Preview" style="max-height: 70px; max-width: 120px" alt="Preview">
+                                <button class="btn btn-warning ml-3" @click.prevent="days[d].day_photo2 = ''">Remove Day {{d+1}} photo #2</button>
+                            </div>
+                            <div v-else-if="days[d].day_photo2 && !days[d].day_photo2Preview">
+                                <img :src="`/storage/day2day_photos/${days[d].day_photo2}`" style="max-height: 70px; max-width: 120px" alt="Preview">
+                                <button class="btn btn-warning ml-3" @click.prevent="days[d].day_photo2 = ''">Remove Day {{d+1}} photo #2</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button @click.prevent="addDay(d)" class="btn btn-primary">Add Day below</button>
+                    <button @click.prevent="remDay(d)" class="btn btn-danger pull-right">Remove Day {{ d+1 }}</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div v-if="!tour.photo" class="form-group col-md-6 mb-3">
+                <label for="photo">Upload Tour Photo</label>
+                <input type="file" @change="collectTourPhoto($event)" name="photo" id="photo" class="form-control">
+            </div>
+            <div v-else class="col-md-6 mb-3">
+                <img v-if="this.edit" :src="`/storage/tour_photos/${tour.photo}`" alt="preview" style="max-width: 70px; max-height: 100px;">
+                <img v-else :src="tour.photoPreview" alt="preview" style="max-width: 70px; max-height: 70px;">
+                <button @click.prevent="tour.photo = ''" class="btn btn-warning ml-3">Remove Tour Photo</button>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="best_time">Best time for this Tour</label>
+                <input type="text" name="best_time" id="best_time" v-model="tour.best_time" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="useful_information">Useful Safari Information</label> <small class="text-muted">(Sightseeing Highlights, Dining Experience, Travel Highlights, Includes & Excludes)</small>
+            <ckeditor :editor="editor" v-model="tour.useful_information" :config="editorConfig" id="useful_information"></ckeditor>
+<!--                                <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>-->
+        </div>
+    </form>
+</div>

@@ -60,6 +60,6 @@
         {{--bootom bar--}}
         <div class="col-md-12 bottom-bar-footer">
             <span class="assistant-light">&copy; {{ Date('Y') }} {{ config('app.name') }}. All Rights Reserved</span>
-            <span class="assistant-light pull-right">Developed<span class="powered"><a href="https://blurredconsole.github.io" target="_blank" title="BluCo">BluCo</a></span></span>
+            <span class="assistant-light pull-right">Developed<span class="powered"><a href="https://blurredconsole.github.io" target="_blank" title="BluCo">Aman Tairo</a></span></span>
         </div>
     </div>

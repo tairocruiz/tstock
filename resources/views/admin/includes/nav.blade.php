@@ -9,7 +9,7 @@
         <a href="/admin/tours" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Safaris & Tours</a>
         <a href="/admin/tour-categories" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Tour Categories</a>
         <a href="/admin/posts" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Blog Posts</a>
-        <a href="/admin/post-categories" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Post Categories</a>
+        <a href="/admin/post_categories" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Post Categories</a>
         <a href="/admin/pages" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Company Pages</a>
         <a href="/admin/photos" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>Photo Gallery</a>
         <a href="/admin/users" class="list-group-item"><i class="fa fa-angle-right mr-2"></i>System Users</a>
